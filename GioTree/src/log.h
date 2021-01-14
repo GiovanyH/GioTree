@@ -4,7 +4,7 @@
 
 struct GioLog
 {
-	static void warn(std::string warn);
+	static void warn(std::string warn, std::string file, int where);
 
-	static void error(std::string error);
+	static void error(std::string error, std::string file, int where);
 };

@@ -1,7 +1,8 @@
 #include "log.h"
 
+#define ERROR(erro) GioLog::error(erro, __FILE__, __LINE__) 
+
 int main()
 {
-	GioLog::warn("Teste de aviso");
-	GioLog::error("Teste de erro");
+	ERROR("teste de erro");
 }
