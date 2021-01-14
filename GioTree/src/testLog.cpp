@@ -2,6 +2,6 @@
 
 int main()
 {
-	GioLog::printWarn("Teste de aviso");
-	GioLog::printError("Teste de erro");
+	GioLog::warn("Teste de aviso");
+	GioLog::error("Teste de erro");
 }

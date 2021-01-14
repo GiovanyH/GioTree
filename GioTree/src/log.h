@@ -1,9 +1,10 @@
 #pragma once
-#include <iostream>
+#include <stdio.h>
+#include <string>
 
 struct GioLog
 {
-	static void printWarn(std::string warn);
+	static void warn(std::string warn);
 
-	static void printError(std::string error);
+	static void error(std::string error);
 };
