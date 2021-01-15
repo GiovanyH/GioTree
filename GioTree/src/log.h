@@ -1,15 +1,15 @@
 #pragma once
 #include <sstream>
-#include <string>
 #include <chrono>
 #include <ctime>
 #include "core.h"
 
+// Pra debuggar
 struct Log
-{
-	static void warn(std::string core, std::string warn, std::string file, unsigned int line);
+{ 
+	static void warn(const char* core, const char* warn, const char* file, unsigned line);
 
-	static void error(std::string core, std::string error, std::string file, unsigned int line);
+	static void error(const char* core, const char* error, const char* file, unsigned line);
 
-	static void info(std::string core, std::string info);
+	static void info(const char* core, const char* info);
 };

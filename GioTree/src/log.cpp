@@ -1,21 +1,20 @@
 #include "log.h"
 
-/* Parte roubada do stack overflow fodase */
+// Formato de tempo pra agradar os olhos 
 #define LOGGER_PRETTY_TIME_FORMAT "%Y-%m-%d %H:%M:%S"
-
+// Formato pro printf
 #define LOGGER_PRETTY_MS_FORMAT ".%03d"
 
-template <typename T>
-
-static int to_ms(const std::chrono::time_point<T>& tp)
+// Converter o tempo atual pra milisegundos pq s
+template<typename T>
+int to_ms(const std::chrono::time_point<T>& tp)
 {
-	using namespace std::chrono;
-
 	auto dur = tp.time_since_epoch();
-	return static_cast<int>(duration_cast<milliseconds>(dur).count());
+	return static_cast<int>(std::chrono::duration_cast<std::chrono::milliseconds>(dur).count());
 }
 
-static std::string pretty_time()
+// Formatar ele em duas partes: a parte da data mesmo e a parte com milisegundos
+std::string pretty_time()
 {
 	auto tp = std::chrono::system_clock::now();
 	std::time_t current_time = std::chrono::system_clock::to_time_t(tp);
@@ -38,23 +37,23 @@ static std::string pretty_time()
 
 	return std::string(buffer, buffer + string_size);
 }
-/* --------------------------------------------- */
+// 2020-01-15 21:00:32.682 format
 
-void Log::warn(std::string core, std::string warn, std::string file, unsigned int line)
+void Log::warn(const char* core, const char* warn, const char* file, unsigned line)
 {
 	printf("\033[37m%s \033[0m %s \033[33m[AVISO]: \033[0m%s, \033[36m[%s, linha %i]\033[0m\n",
-			pretty_time().c_str(), core.c_str(), warn.c_str(), file.c_str(), line);
+			pretty_time().c_str(), core, warn, file, line);
 }
 
-void Log::error(std::string core, std::string error, std::string file, unsigned int line)
+void Log::error(const char* core, const char* error, const char* file, unsigned line)
 {
 	Core::errors = true;
 	printf("\033[37m%s \033[0m %s \033[31m[ERRO]:  \033[0m%s, \033[36m[%s, linha %i]\033[0m\n",
-			pretty_time().c_str(), core.c_str(), error.c_str(), file.c_str(), line);
+			pretty_time().c_str(), core, error, file, line);
 	Core::stop();
 }
 
-void Log::info(std::string core, std::string error)
+void Log::info(const char* core, const char* error)
 {
-	printf("\033[37m%s \033[0m %s \033[92m[INFO]:  \033[0m%s\n", pretty_time().c_str(), core.c_str(), error.c_str());
+	printf("\033[37m%s \033[0m %s \033[92m[INFO]:  \033[0m%s\n", pretty_time().c_str(), core, error);
 }
