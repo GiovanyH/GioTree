@@ -1,19 +1,19 @@
 #include "core.h"
 
-bool GioCore::error = false;
-bool GioCore::running = true;
+bool Core::errors = false;
+bool Core::running = true;
 
-void GioCore::init()
+void Core::init()
 {
-	GioLog::info("[CORE]", "Engine iniciada!", "default", 0);
+	Log::info("[CORE]", "Engine iniciada!");
 }
 
-void GioCore::stop()
+void Core::stop()
 {
-	GioCore::running = false;
+	Core::running = false;
 	
-	if(GioCore::error)
-		GioLog::info("[CORE]", "Engine terminada com erros :(", "default", 0);
+	if(Core::errors)
+		Log::info("[CORE]", "Engine terminada com erros :(");
 	else
-		GioLog::info("[CORE]", "Engine terminada com sucesso!", "default", 0);
+		Log::info("[CORE]", "Engine terminada com sucesso :)");
 }

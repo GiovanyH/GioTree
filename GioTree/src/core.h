@@ -1,9 +1,9 @@
 #pragma once
 #include "log.h"
 
-struct GioCore
+struct Core
 {
-	static bool error;
+	static bool errors;
 
 	static bool running;
 
