@@ -1,12 +1,10 @@
 #include "log.h"
 
-// strftime format
+/* Parte roubada do stack overflow fodase */
 #define LOGGER_PRETTY_TIME_FORMAT "%Y-%m-%d %H:%M:%S"
 
-// printf format
 #define LOGGER_PRETTY_MS_FORMAT ".%03d"
 
-// convert current time to milliseconds since unix epoch
 template <typename T>
 
 static int to_ms(const std::chrono::time_point<T>& tp)
@@ -38,8 +36,9 @@ static std::string pretty_time()
 			LOGGER_PRETTY_MS_FORMAT, ms
 	);
 
-	return std::string(buffer, string_size);
+	return std::string(buffer, buffer + string_size);
 }
+/* --------------------------------------------- */
 
 void Log::warn(std::string core, std::string warn, std::string file, unsigned int line)
 {
