@@ -3,8 +3,11 @@
 
 namespace Core
 {
+	extern void init();
 	extern unsigned errors;
 	extern bool running;
-	extern void init();
 	extern void stop();
+
+	extern void Ready();
+	extern void Update();
 }
