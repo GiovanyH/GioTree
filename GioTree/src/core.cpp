@@ -1,12 +1,12 @@
 #include "core.h"
 
-unsigned Core::errors = 0;
 bool Core::running = false;
+unsigned Core::errors = 0;
 
 void Core::init()
 {
 	running = true;
-	logInfo("[CORE]", "Engine iniciada!");
+	Log::info("[CORE]", "Engine iniciada!");
 }
 
 void Core::stop()
@@ -15,5 +15,5 @@ void Core::stop()
 	char p3[35];
 	snprintf(p3, sizeof(p3), "Engine terminada com %u erros!", errors);
 		
-	logInfo("[CORE]", p3);
+	Log::info("[CORE]", p3);
 }

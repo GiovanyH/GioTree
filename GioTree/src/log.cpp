@@ -39,13 +39,13 @@ std::string pretty_time()
 }
 // 2020-01-15 21:00:32.682 format
 
-void logWarn(const char *wCore, const char *warn, const char *file, unsigned line)
+void Log::warn(const char *wCore, const char *warn, const char *file, unsigned line)
 {
 	printf("\033[37m%s \033[0m %s \033[33m[AVISO]: \033[0m%s, \033[36m[%s, linha %i]\033[0m\n",
 			pretty_time().c_str(), wCore, warn, file, line);
 }
 
-void logError(const char *wCore, const char *error, const char *file, unsigned line)
+void Log::error(const char *wCore, const char *error, const char *file, unsigned line)
 {
 	Core::errors++;
 	printf("\033[37m%s \033[0m %s \033[31m[ERRO]:  \033[0m%s, \033[36m[%s, linha %i]\033[0m\n",
@@ -53,7 +53,7 @@ void logError(const char *wCore, const char *error, const char *file, unsigned l
 	Core::stop();
 }
 
-void logInfo(const char *wCore, const char *error)
+void Log::info(const char *wCore, const char *error)
 {
 	printf("\033[37m%s \033[0m %s \033[92m[INFO]:  \033[0m%s\n", pretty_time().c_str(), wCore, error);
 }

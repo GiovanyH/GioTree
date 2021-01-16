@@ -1,10 +1,10 @@
 #pragma once
 #include "log.h"
 
-struct Core
+namespace Core
 {
-	static unsigned errors;
-	static bool running;
-	static void init();
-	static void stop();
-};
+	extern unsigned errors;
+	extern bool running;
+	extern void init();
+	extern void stop();
+}
