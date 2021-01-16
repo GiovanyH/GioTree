@@ -5,11 +5,6 @@
 #include "core.h"
 
 // Pra debuggar
-struct Log
-{ 
-	static void warn(const char* core, const char* warn, const char* file, unsigned line);
-
-	static void error(const char* core, const char* error, const char* file, unsigned line);
-
-	static void info(const char* core, const char* info);
-};
+void logWarn(const char *core, const char *warn, const char *file, unsigned line);
+void logError(const char *core, const char *error, const char *file, unsigned line);
+void logInfo(const char *core, const char *info);

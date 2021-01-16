@@ -3,11 +3,8 @@
 
 struct Core
 {
-	static bool errors;
-
+	static unsigned errors;
 	static bool running;
-
 	static void init();
-
 	static void stop();
 };

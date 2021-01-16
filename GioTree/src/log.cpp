@@ -39,21 +39,21 @@ std::string pretty_time()
 }
 // 2020-01-15 21:00:32.682 format
 
-void Log::warn(const char* core, const char* warn, const char* file, unsigned line)
+void logWarn(const char *wCore, const char *warn, const char *file, unsigned line)
 {
 	printf("\033[37m%s \033[0m %s \033[33m[AVISO]: \033[0m%s, \033[36m[%s, linha %i]\033[0m\n",
-			pretty_time().c_str(), core, warn, file, line);
+			pretty_time().c_str(), wCore, warn, file, line);
 }
 
-void Log::error(const char* core, const char* error, const char* file, unsigned line)
+void logError(const char *wCore, const char *error, const char *file, unsigned line)
 {
-	Core::errors = true;
+	Core::errors++;
 	printf("\033[37m%s \033[0m %s \033[31m[ERRO]:  \033[0m%s, \033[36m[%s, linha %i]\033[0m\n",
-			pretty_time().c_str(), core, error, file, line);
+			pretty_time().c_str(), wCore, error, file, line);
 	Core::stop();
 }
 
-void Log::info(const char* core, const char* error)
+void logInfo(const char *wCore, const char *error)
 {
-	printf("\033[37m%s \033[0m %s \033[92m[INFO]:  \033[0m%s\n", pretty_time().c_str(), core, error);
+	printf("\033[37m%s \033[0m %s \033[92m[INFO]:  \033[0m%s\n", pretty_time().c_str(), wCore, error);
 }

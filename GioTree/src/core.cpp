@@ -1,19 +1,19 @@
 #include "core.h"
 
-bool Core::errors = false;
-bool Core::running = true;
+unsigned Core::errors = 0;
+bool Core::running = false;
 
 void Core::init()
 {
-	Log::info("[CORE]", "Engine iniciada!");
+	running = true;
+	logInfo("[CORE]", "Engine iniciada!");
 }
 
 void Core::stop()
 {
-	Core::running = false;
-	
-	if(Core::errors)
-		Log::info("[CORE]", "Engine terminada com erros :(");
-	else
-		Log::info("[CORE]", "Engine terminada com sucesso :)");
+	running = false;
+	char p3[35];
+	snprintf(p3, sizeof(p3), "Engine terminada com %u erros!", errors);
+		
+	logInfo("[CORE]", p3);
 }
