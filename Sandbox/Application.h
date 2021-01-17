@@ -1,2 +1,2 @@
-#include "../GioTree/src/main.cpp"
-// Mudar depois
+#pragma once
+#include "../GioTree/src/Engine.h"
