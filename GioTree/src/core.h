@@ -7,7 +7,4 @@ namespace Core
 	extern unsigned errors;
 	extern bool running;
 	extern void stop();
-
-	extern void Ready();
-	extern void Update();
 }
