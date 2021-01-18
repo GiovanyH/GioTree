@@ -11,9 +11,8 @@ void Core::init()
 
 void Core::finish()
 {
-	running = false;
 	char p3[35];
-	snprintf(p3, sizeof(p3), "Engine terminada com %u erros!", errors);
-		
+	snprintf(p3, sizeof(p3), "Engine terminada com %u erros!", errors);	
 	Log::info("[CORE]", p3);
+	running = false;
 }

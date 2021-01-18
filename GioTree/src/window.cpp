@@ -7,7 +7,10 @@ window_t::window_t(unsigned wWidth, unsigned wHeight, std::string wTitle)
 
 	width = wWidth; height = wHeight;
 	title = wTitle;
+}
 
+void window_t::init()
+{
 	window = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
 
 	if(!window)
@@ -19,3 +22,4 @@ window_t::~window_t()
 {
 	glfwTerminate();
 }
+

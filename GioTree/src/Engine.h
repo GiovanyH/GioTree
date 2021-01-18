@@ -1,6 +1,7 @@
 #include "core.h"
 #include "log.h"
 #include "window.h"
+#include "projectManager.h"
 #include <iostream>
 
 namespace Engine

@@ -26,16 +26,28 @@ int main()
 		glfwPollEvents();
 		glfwSetWindowTitle(window.window, window.title.c_str());
 	}
-	Engine::finish;
+	Engine::finish();
 	return 0;
 }
 
 int Engine::init()
 {
 	Log::info("[CORE]", "test");
-	std::cout << "Project name: ";
-	std::cin >> project_name;
-	window.title = project_name;
+	Project project;
+	std::string name;
+	std::string dir;
+	std::cout << "Nome do jogo: ";
+	std::cin >> name;
+	std::cout << "Diretorio do jogo: ";
+	std::cin >> dir;
+
+	project.create(name, dir);
+
+	window.title = name;
+
+	Core::init();
+	window.init();
+
 	return 0;
 }
 

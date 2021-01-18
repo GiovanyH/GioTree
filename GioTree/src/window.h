@@ -10,5 +10,6 @@ struct window_t
 	unsigned width, height;
 	std::string title;
 	window_t(unsigned wWidth, unsigned wHeight, std::string wTitle);
+	void init();
 	~window_t();
 };
