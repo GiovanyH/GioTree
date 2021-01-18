@@ -50,7 +50,6 @@ void Log::error(const char *wCore, const char *error, const char *file, unsigned
 	Core::errors++;
 	printf("\033[37m%s \033[0m %s \033[31m[ERRO]:  \033[0m%s, \033[36m[%s, linha %i]\033[0m\n",
 			pretty_time().c_str(), wCore, error, file, line);
-	Core::stop();
 }
 
 void Log::info(const char *wCore, const char *error)

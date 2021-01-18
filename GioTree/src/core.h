@@ -6,5 +6,5 @@ namespace Core
 	extern void init();
 	extern unsigned errors;
 	extern bool running;
-	extern void stop();
+	extern void finish();
 }

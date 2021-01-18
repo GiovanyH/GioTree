@@ -9,7 +9,7 @@ void Core::init()
 	Log::info("[CORE]", "Engine iniciada!");
 }
 
-void Core::stop()
+void Core::finish()
 {
 	running = false;
 	char p3[35];
