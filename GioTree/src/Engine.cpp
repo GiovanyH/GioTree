@@ -2,7 +2,7 @@
 
 std::string Engine::project_name = "default";
 
-GLFWwindow *window;
+window_t window(600, 400, Engine::project_name);
 
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -16,14 +16,15 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 int main()
 {
 	Engine::Ready();
-	glfwSetKeyCallback(window, key_callback);
+	glfwSetKeyCallback(window.window, key_callback);
 
-	while(!glfwWindowShouldClose(window))
+	while(!glfwWindowShouldClose(window.window))
 	{
 		Engine::Update();
 
-		glfwSwapBuffers(window);
+		glfwSwapBuffers(window.window);
 		glfwPollEvents();
+		glfwSetWindowTitle(window.window, window.title.c_str());
 	}
 	Engine::finish;
 	return 0;
@@ -31,20 +32,10 @@ int main()
 
 int Engine::init()
 {
-    	if (!glfwInit())
-		return -1;
-    	window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
-    	if (!window)
-    	{
-       		glfwTerminate();
-        	return -1;
-   	}
-
-    	glfwMakeContextCurrent(window);
-
 	Log::info("[CORE]", "test");
 	std::cout << "Project name: ";
 	std::cin >> project_name;
+	window.title = project_name;
 	return 0;
 }
 
