@@ -1,6 +1,6 @@
 #pragma once
 #include <fstream>
-#include <unistd.h>
+#include <filesystem>
 #include "log.h"
 
 struct Project
@@ -10,6 +10,7 @@ struct Project
 	std::string version;
 	std::string dir;
 
-	void create(std::string pName, std::string pDir);
+	void create(std::string pName, std::string pDir, std::string eDir);
+	void open(std::string pName);
 	void remove();
 };

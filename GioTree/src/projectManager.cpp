@@ -1,17 +1,27 @@
 #include "projectManager.h"
 
-void Project::create(std::string pName = "default", std::string pDir = "~/Documents/")
+void Project::create(std::string pName = "default", std::string pDir = "/home/user/Documents/", std::string eDir = "/home/Engine.h")
 {
-	std::string mkGameFolder = "mkdir " + pDir + pName;
+	std::string GameFolder = pDir + pName;
 
-	Log::warn("[CORE]", "Seu projeto esta em", std::string(pDir + pName).c_str(), 0);
+	namespace cu = std::filesystem;
+	cu::create_directories(GameFolder);
 
-	dir = pDir + pName;
+	Log::warn("[CORE]", "Seu projeto esta em", GameFolder.c_str(), 0);
 
-	std::string gameCppFile = "touch " + dir + "/" + pName + ".cpp";
+	std::string GameCPP = GameFolder + "/" + pName + ".cpp";
+	std::fstream fs;
+    	fs.open(GameCPP, std::fstream::in | std::fstream::out | std::fstream::app);
 
-	system(mkGameFolder.c_str());
-	system(gameCppFile.c_str());
+    	fs << "#include " << '"' << eDir << '"';
+	fs << "\n\nEngine::Ready()\n{\n}\n\nEngine::Update()\n{\n}\n\n// Teste\n";
+
+    	fs.close();
+}
+
+void Project::open(std::string pName)
+{
+
 }
 
 void Project::remove()
