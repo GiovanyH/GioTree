@@ -1,7 +1,7 @@
 #include "Engine.h"
 
 std::string Engine::project_name = "default";
-std::string Engine::dir = "~/" + std::string(__FILE__);
+std::string Engine::dir = cu::current_path();
 
 window_t window(600, 400, Engine::project_name);
 
@@ -33,8 +33,6 @@ int main()
 
 int Engine::init()
 {
-	dir.erase(dir.end()-4, dir.end());
-	dir += ".h";
 	Project project;
 	std::string pName;
 	std::string pDir;
@@ -42,6 +40,8 @@ int Engine::init()
 	std::cin >> pName;
 	std::cout << "Diretorio do jogo: ";
 	std::cin >> pDir;
+
+	project.see(dir);
 
 	project.create(pName, pDir, dir);
 
