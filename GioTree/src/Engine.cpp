@@ -34,18 +34,36 @@ int main()
 int Engine::init()
 {
 	Project project;
-	std::string pName;
-	std::string pDir;
-	std::cout << "Nome do jogo: ";
-	std::cin >> pName;
-	std::cout << "Diretorio do jogo: ";
-	std::cin >> pDir;
 
 	project.see(dir);
 
-	project.create(pName, pDir, dir);
+	std::cout << "Selecione uma opçao:" << std::endl;
+	for(int p = 0; p < project.projects.size()-1; ++p)
+	{
+		std::cout << "[" << p << "] - " << project.projects.at(p) << std::endl;
+	}
 
-	window.title = pName;
+	std::cout << "[" << project.projects.size()-1 << "] - Novo projeto" << std::endl;
+	std::cout << ">> ";
+	unsigned opt;
+	std::cin >> opt;
+
+	if(opt == project.projects.size()-1)
+	{
+		std::cout << "Criando um projeto!" << std::endl;
+		std::string pName;
+		std::cout << "Nome do projeto: ";
+		std::cin >> pName;
+		std::string pDir;
+		std::cout << std::endl << "Diretorio do projeto: ";
+		std::cin >> pDir;
+
+		std::cout << std::endl;
+
+		project.create(pName, pDir, dir);
+	}
+
+	window.title = "default"; // for now
 
 	Core::init();
 	window.init();
