@@ -1,4 +1,5 @@
 #pragma once
+
 #include <iostream>
 #include <unistd.h>
 #include <sys/wait.h>
@@ -10,8 +11,8 @@
 namespace Engine
 {
 	extern std::string project_name;
+	extern std::string dir;
+
 	extern int init();
 	extern int finish();
-
-	extern std::string dir;
 }

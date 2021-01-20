@@ -30,4 +30,3 @@ window_t::~window_t()
 	SDL_Quit();
 
 }
-

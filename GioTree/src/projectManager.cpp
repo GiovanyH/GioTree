@@ -2,9 +2,7 @@
 
 void Project::see(std::string pDirs)
 {
-	std::string EngineFile = pDirs;
-
-	EngineFile += "/GioTree/usr/";
+	std::string EngineFile = pDirs + "/GioTree/usr/";
 
 	for(const auto & entry : cu::directory_iterator(EngineFile))
 	{
@@ -18,51 +16,34 @@ void Project::see(std::string pDirs)
 	}
 }
 
-void Project::create(std::string pName = "default", std::string pDir = "/home/user/Documents/", std::string eDir = "/home/Engine.h")
+void Project::create(std::string pName = "default", std::string pDir = "/home/user/Documents/", std::string eDir = "/home/GioTree/GioTree/src/Engine.h")
 {
 	std::string GameFolder = pDir + pName;
-
 	cu::create_directories(GameFolder);
-
 	dir = GameFolder;
 	name = pName;
 
-	Log::info(std::string("Seu projeto esta em" + GameFolder).c_str());
+	Log::info(("Seu projeto esta em" + GameFolder).c_str());
 
 	std::string GameCPP = GameFolder + "/" + pName + ".cpp";
-	std::fstream fs;
-    	fs.open(GameCPP, std::fstream::in | std::fstream::out | std::fstream::app);
-
+	std::fstream fs(GameCPP, std::fstream::in | std::fstream::out | std::fstream::app);
     	fs << "#include " << '"' << eDir << "/GioTree/src/Application.h" << '"';
 	fs << "\n\nvoid Application::Ready()\n{\n}\n\nvoid Application::Update()\n{\n}\n\n// Teste\n";
-
     	fs.close();
 
-	std::string EngineFile = eDir;
+	std::string EngineFile = eDir + "/GioTree/usr/" + pName + ".gio";
 
-	EngineFile += "/GioTree/usr/" + pName + ".gio";
-
-	std::fstream fs2;
-	fs2.open(EngineFile, std::fstream::in | std::fstream::out | std::fstream::app);
-
+	std::fstream fs2(EngineFile, std::fstream::in | std::fstream::out | std::fstream::app);
 	fs2 << "GioDir: " << dir << "\n\nGioName: " << name << "\n\nGioDesc: " << description << "\n\nGioVersion: " << version;
-
 	fs2.close();
 }
 
 void Project::open(std::string dataDir, std::string pName)
 {
 	std::string line;
-
 	std::string pPath = dataDir + "/GioTree/" + "usr/" + pName;
-
-	std::cout << pPath << std::endl;
-
-	std::fstream fs;
-	fs.open(pPath, std::fstream::in | std::fstream::out | std::fstream::app);
-
+	std::fstream fs(pPath, std::fstream::in | std::fstream::out | std::fstream::app);
 	std::vector<std::string> projProp;
-
 	unsigned n = 0;
 	while(getline(fs, line))
 	{
@@ -70,7 +51,6 @@ void Project::open(std::string dataDir, std::string pName)
 		projProp.push_back(line);
 		++n;
 	}
-
 	fs.close();
 
 	dir = projProp.at(0);

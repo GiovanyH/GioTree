@@ -1,4 +1,5 @@
 #pragma once
+
 #include <sstream>
 #include <chrono>
 #include <ctime>
@@ -8,6 +9,7 @@
 namespace Log
 {
 	extern std::string core;
+
 	extern void warnf(const char *mess, const char *file, unsigned line);
 	#define warn(mess) warnf(mess,__FILE__, __LINE__)
 	extern void errorf(const char *mess, const char *file, unsigned line);

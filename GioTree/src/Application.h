@@ -8,8 +8,11 @@
 namespace Application
 {
 	extern std::string project_name;
+
 	extern void init();
+
 	extern void Ready();
 	extern void Update();
+
 	extern void finish();
 }

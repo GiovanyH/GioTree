@@ -7,12 +7,13 @@ window_t window(600, 400, Application::project_name);
 void Application::init()
 {
 	Log::core = "[APP]";
-	Log::info("Iniciada a aplicaçao");
-
-	window.title = "default"; // for now
 
 	Core::init();
 	window.init();
+
+	Log::info("Iniciada a aplicaçao");
+
+	window.title = project_name.c_str(); 
 }
 
 void Application::finish()
@@ -26,6 +27,7 @@ void Application::finish()
 int main()
 {
 	Application::init();
+
 	while(Core::running)
 	{
 		SDL_Event e;
@@ -36,9 +38,7 @@ int main()
 				Application::finish();
 			}
 		}
-
 		SDL_RenderClear(window.renderer);
 		SDL_RenderPresent(window.renderer);
-		// Set window title later
 	}
 }

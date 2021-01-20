@@ -1,6 +1,5 @@
 #include "log.h"
 
-std::string Log::core = "[CORE]";
 // Formato de tempo pra agradar os olhos 
 #define LOGGER_PRETTY_TIME_FORMAT "%Y-%m-%d %H:%M:%S"
 // Formato pro printf
@@ -40,6 +39,7 @@ std::string pretty_time()
 }
 // 2020-01-15 21:00:32.682 format
 
+std::string Log::core = "[CORE]";
 void Log::warnf(const char *mess, const char *file, unsigned line)
 {
 	printf("\033[37m%s \033[0m %s \033[33m[AVISO]: \033[0m%s, \033[36m[%s, linha %i]\033[0m\n",
