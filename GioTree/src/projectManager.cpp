@@ -50,9 +50,43 @@ void Project::create(std::string pName = "default", std::string pDir = "/home/us
 	fs2.close();
 }
 
-void Project::open(std::string pName)
+void Project::open(std::string dataDir, std::string pName)
 {
+	std::string line;
 
+	std::string pPath = dataDir + "/GioTree/" + "usr/" + pName;
+
+	std::cout << pPath << std::endl;
+
+	std::fstream fs;
+	fs.open(pPath, std::fstream::in | std::fstream::out | std::fstream::app);
+
+	std::vector<std::string> projProp;
+
+	unsigned n = 0;
+	while(getline(fs, line))
+	{
+		std::cout << line << std::endl;
+		projProp.push_back(line);
+		++n;
+	}
+
+	fs.close();
+
+	dir = projProp.at(0);
+	name = projProp.at(1);
+	description = projProp.at(2);
+	version = projProp.at(3);
+
+	dir.erase(0, 8);
+	name.erase(0, 9);
+	description.erase(0, 9);
+	version.erase(0, 12);
+
+	std::cout << dir << std::endl;
+	std::cout << name << std::endl;
+	std::cout << description << std::endl;
+	std::cout << version << std::endl;
 }
 
 void Project::remove()

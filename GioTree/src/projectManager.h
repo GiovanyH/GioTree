@@ -18,6 +18,6 @@ struct Project
 
 	void see(std::string pDirs);
 	void create(std::string pName, std::string pDir, std::string eDir);
-	void open(std::string pName);
+	void open(std::string dir, std::string pName);
 	void remove();
 };

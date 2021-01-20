@@ -42,10 +42,9 @@ int Engine::init()
         	std::cout << "[" << project.projects.size() << "] - Novo projeto" << std::endl;
         	std::cout << ">> ";                              
         	std::cin >> opt;                                            
-                                                                           
 	}
-        if(opt == project.projects.size()-1 || project.projects.size() <= 0)                           
-        {                                                       
+	if(project.projects.size() == 0 or opt == project.projects.size())
+	{                                                       
 		std::cout << "Criando um projeto!" << std::endl;
 		std::string pName;                                     
 		std::cout << "Nome do projeto: ";
@@ -54,10 +53,15 @@ int Engine::init()
                 std::cout << std::endl << "Diretorio do projeto: ";
 		std::cin >> pDir;                        
                                                      
-                std::cout << std::endl;              
-                                                 
+                std::cout << std::endl;
+
                 project.create(pName, pDir, dir);
         }
+	if(project.projects.size() > 0 && opt < project.projects.size())	
+	{
+		project.open(dir, project.projects.at(opt));
+	}
+
 	Core::init();
 	window.init();
 	
