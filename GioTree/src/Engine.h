@@ -12,7 +12,4 @@ namespace Engine
 	extern int finish();
 
 	extern std::string dir;
-
-	extern void Ready();
-	extern void Update();
 }

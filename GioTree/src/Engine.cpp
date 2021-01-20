@@ -1,72 +1,66 @@
 #include "Engine.h"
 
-std::string Engine::project_name = "default";
 std::string Engine::dir = cu::current_path();
-
-window_t window(600, 400, Engine::project_name);
-
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-    {
-	std::cout << "yes" << std::endl;
-        glfwSetWindowShouldClose(window, GLFW_TRUE);
-    }
-}
+window_t window(600, 400, "GioEngine");
 
 int main()
 {
-	Engine::Ready();
-	glfwSetKeyCallback(window.window, key_callback);
-
-	while(!glfwWindowShouldClose(window.window))
+	Engine::init();
+	while(Core::running)
 	{
-		Engine::Update();
+		SDL_Event e;
+		if(SDL_PollEvent(&e))
+		{
+			if(e.type == SDL_QUIT)
+			{
+				Engine::finish();
+			}
+		}
 
-		glfwSwapBuffers(window.window);
-		glfwPollEvents();
-		glfwSetWindowTitle(window.window, window.title.c_str());
+		SDL_RenderClear(window.renderer);
+		SDL_RenderPresent(window.renderer);
 	}
-	Engine::finish();
 	return 0;
 }
 
 int Engine::init()
 {
-	Project project;
+	Project project;     
+                         
+        project.see(dir);                                    
+                                                              
+        unsigned opt;                                
 
-	project.see(dir);
-
-	std::cout << "Selecione uma opçao:" << std::endl;
-	for(int p = 0; p < project.projects.size()-1; ++p)
+	if(project.projects.size() > 0)
 	{
-		std::cout << "[" << p << "] - " << project.projects.at(p) << std::endl;
+        	std::cout << "Selecione uma opçao:" << std::endl; 
+        	for(int p = 0; p < project.projects.size(); ++p)                                 
+        	{                                                                              
+               		std::cout << "[" << p << "] - " << project.projects.at(p) << std::endl;
+        	}                                                                                    
+                                                                                         
+        	std::cout << "[" << project.projects.size() << "] - Novo projeto" << std::endl;
+        	std::cout << ">> ";                              
+        	std::cin >> opt;                                            
+                                                                           
 	}
-
-	std::cout << "[" << project.projects.size()-1 << "] - Novo projeto" << std::endl;
-	std::cout << ">> ";
-	unsigned opt;
-	std::cin >> opt;
-
-	if(opt == project.projects.size()-1)
-	{
+        if(opt == project.projects.size()-1 || project.projects.size() <= 0)                           
+        {                                                       
 		std::cout << "Criando um projeto!" << std::endl;
-		std::string pName;
+		std::string pName;                                     
 		std::cout << "Nome do projeto: ";
-		std::cin >> pName;
-		std::string pDir;
-		std::cout << std::endl << "Diretorio do projeto: ";
-		std::cin >> pDir;
-
-		std::cout << std::endl;
-
-		project.create(pName, pDir, dir);
-	}
-
-	window.title = "default"; // for now
-
+		std::cin >> pName;                                     
+		std::string pDir;                                  
+                std::cout << std::endl << "Diretorio do projeto: ";
+		std::cin >> pDir;                        
+                                                     
+                std::cout << std::endl;              
+                                                 
+                project.create(pName, pDir, dir);
+        }
 	Core::init();
 	window.init();
+	
 
 	return 0;
 }
