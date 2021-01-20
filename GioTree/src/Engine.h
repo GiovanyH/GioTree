@@ -1,5 +1,7 @@
 #pragma once
 #include <iostream>
+#include <unistd.h>
+#include <sys/wait.h>
 #include "core.h"
 #include "log.h"
 #include "window.h"

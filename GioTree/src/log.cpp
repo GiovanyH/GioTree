@@ -1,5 +1,6 @@
 #include "log.h"
 
+std::string Log::core = "[CORE]";
 // Formato de tempo pra agradar os olhos 
 #define LOGGER_PRETTY_TIME_FORMAT "%Y-%m-%d %H:%M:%S"
 // Formato pro printf
@@ -39,20 +40,20 @@ std::string pretty_time()
 }
 // 2020-01-15 21:00:32.682 format
 
-void Log::warn(const char *wCore, const char *warn, const char *file, unsigned line)
+void Log::warnf(const char *mess, const char *file, unsigned line)
 {
 	printf("\033[37m%s \033[0m %s \033[33m[AVISO]: \033[0m%s, \033[36m[%s, linha %i]\033[0m\n",
-			pretty_time().c_str(), wCore, warn, file, line);
+			pretty_time().c_str(), core.c_str(), mess, file, line);
 }
 
-void Log::error(const char *wCore, const char *error, const char *file, unsigned line)
+void Log::errorf(const char *mess, const char *file, unsigned line)
 {
 	Core::errors++;
 	printf("\033[37m%s \033[0m %s \033[31m[ERRO]:  \033[0m%s, \033[36m[%s, linha %i]\033[0m\n",
-			pretty_time().c_str(), wCore, error, file, line);
+			pretty_time().c_str(), core.c_str(), mess, file, line);
 }
 
-void Log::info(const char *wCore, const char *error)
+void Log::info(const char *mess)
 {
-	printf("\033[37m%s \033[0m %s \033[92m[INFO]:  \033[0m%s\n", pretty_time().c_str(), wCore, error);
+	printf("\033[37m%s \033[0m %s \033[92m[INFO]:  \033[0m%s\n", pretty_time().c_str(), core.c_str(), mess);
 }

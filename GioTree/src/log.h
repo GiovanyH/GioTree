@@ -7,7 +7,10 @@
 // Pra debuggar
 namespace Log
 {
-	extern void warn(const char *core, const char *warn, const char *file, unsigned line);
-	extern void error(const char *core, const char *error, const char *file, unsigned line);
-	extern void info(const char *core, const char *info);
+	extern std::string core;
+	extern void warnf(const char *mess, const char *file, unsigned line);
+	#define warn(mess) warnf(mess,__FILE__, __LINE__)
+	extern void errorf(const char *mess, const char *file, unsigned line);
+	#define error(mess) errorf(mess,__FILE__,__LINE__)
+	extern void info(const char *mess);
 }

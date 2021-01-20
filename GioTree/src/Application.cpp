@@ -6,7 +6,8 @@ window_t window(600, 400, Application::project_name);
 
 void Application::init()
 {
-	Log::info("[APP]", "Iniciada a aplicaçao");
+	Log::core = "[APP]";
+	Log::info("Iniciada a aplicaçao");
 
 	window.title = "default"; // for now
 
@@ -24,6 +25,7 @@ void Application::finish()
 
 int main()
 {
+	Application::init();
 	while(Core::running)
 	{
 		SDL_Event e;
@@ -31,7 +33,7 @@ int main()
 		{
 			if(e.type == SDL_QUIT)
 			{
-				Engine::finish();
+				Application::finish();
 			}
 		}
 
