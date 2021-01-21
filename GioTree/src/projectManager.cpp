@@ -2,6 +2,7 @@
 
 void Project::see(std::string pDirs)
 {
+	Log::info("Project::see()");
 	std::string EngineFile = pDirs + "/GioTree/usr/";
 
 	for(const auto & entry : cu::directory_iterator(EngineFile))

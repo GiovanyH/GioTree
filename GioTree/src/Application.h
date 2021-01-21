@@ -3,7 +3,6 @@
 #include <string>
 #include "log.h"
 #include "core.h"
-#include "window.h"
 
 namespace Application
 {

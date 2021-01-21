@@ -1,12 +1,18 @@
 #include "Engine.h"
 
 std::string Engine::dir = cu::current_path();
+std::string Engine::project_name = "default";
+std::string wDir = (Engine::dir + "/GioTree/src/kiss_sdl-master/");
 
-window_t window(600, 400, "GioEngine");
+window_t window[1];
 
 int Engine::init()
 {
 	Log::core = "[CORE]";
+	Log::info(dir.c_str());
+
+	window->width = 600; window->height = 400;
+	Log::info("window->width = 600,");
 
 	Project project;     
         project.see(dir);                                    
@@ -39,11 +45,23 @@ int Engine::init()
         }
 	else if(project.projects.size() > 0 && opt < project.projects.size())
 	{
+		Log::info("Choosing project");
 		project.open(dir, project.projects.at(opt));
 	}
 
+	Log::info("Choosed");
+
+	project_name = project.projects.at(opt);
+
+	Log::info("project name = project.at(opt)");
+
+	window->title = (char*)malloc(sizeof(project_name.c_str()));
+	strcpy(window->title, project_name.c_str());
+
+	Log::info("strcpy window title");
+
 	Core::init();
-	window.init();
+	window->init(wDir.c_str());
 	
 	Log::info("Engine inicializada!");
 
@@ -71,20 +89,24 @@ int Engine::finish()
 int main()
 {
 	Engine::init();
+
+	int draw = 1;
 	while(Core::running)
 	{
 		SDL_Event e;
-		if(SDL_PollEvent(&e))
+		if(SDL_PollEvent(&window->e))
 		{
-			if(e.type == SDL_QUIT)
-			{
-				Engine::finish();
-			}
+			if(window->e.type == SDL_QUIT) Engine::finish();
+			
+			kiss_window_event(window->window, &window->e, &draw);
 		}
 
-		SDL_RenderClear(window.renderer);
-		SDL_RenderPresent(window.renderer);
+		if(!draw) continue;
+		SDL_RenderClear(window->renderer);
+
+		kiss_window_draw(window->window, window->renderer);
+		SDL_RenderPresent(window->renderer);
 	}
+	kiss_clean(&window->objects);
 	return 0;
 }
-
