@@ -269,11 +269,11 @@ int main()
 
         quit = 0;
         draw = 1;
-        textbox_width = 250;
+        textbox_width = 320;
         textbox_height = 100;
-        window2_width = 400;
-        window2_height = 200;
-        renderer = kiss_init(wDir.c_str(), "Escolha um projeto", &objects, 640, 480);
+        window2_width = 320;
+        window2_height = 150;
+        renderer = kiss_init(wDir.c_str(), "Escolha um projeto", &objects, 640, 300);
         if (!renderer) return 1;
         kiss_array_new(&a1);
         kiss_array_append(&objects, ARRAY_TYPE, &a1);
@@ -284,22 +284,22 @@ int main()
         kiss_window_new(&window1, NULL, 1, 0, 0, kiss_screen_width,
                 kiss_screen_height);
         kiss_textbox_new(&textbox, &window1, 1, &a2,
-                vscrollbar.uprect.x + kiss_up.w, textbox.rect.y,
+                160, 50,
                 textbox_width, textbox_height);
         kiss_vscrollbar_new(&vscrollbar, &window1, textbox.rect.x +
-                textbox_width, vscrollbar.uprect.y, textbox_height);
-        kiss_label_new(&label, &window1, "Files", textbox.rect.x +
+                textbox_width, textbox.rect.y, textbox_height);
+        kiss_label_new(&label, &window1, "Projetos", textbox.rect.x +
                 kiss_edge, textbox.rect.y - kiss_textfont.lineheight);
         kiss_label_new(&label_sel, &window1, "", textbox.rect.x +
                 kiss_edge, textbox.rect.y + textbox_height +
 			kiss_normal.h);
-        kiss_entry_new(&entry, &window1, 1, "kiss", textbox.rect.x,
+        kiss_entry_new(&entry, &window1, 1, "kiss", 160,
                 label_sel.rect.y + kiss_textfont.lineheight,
-                2 * textbox_width + 2 * kiss_up.w + kiss_edge);
-        kiss_button_new(&button_cancel, &window1, "Cancel",
+                textbox_width);
+        kiss_button_new(&button_cancel, &window1, "Cancelar",
                 entry.rect.x + entry.rect.w - kiss_edge - kiss_normal.w,
                 entry.rect.y + entry.rect.h + kiss_normal.h);
-        kiss_button_new(&button_ok1, &window1, "OK", button_cancel.rect.x -
+        kiss_button_new(&button_ok1, &window1, "Abrir", button_cancel.rect.x -
                 2 * kiss_normal.w, button_cancel.rect.y);
         kiss_window_new(&window2, NULL, 1, kiss_screen_width / 2 -
                 window2_width / 2, kiss_screen_height / 2 -
