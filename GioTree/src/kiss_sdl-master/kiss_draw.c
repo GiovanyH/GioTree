@@ -170,9 +170,63 @@ int kiss_font_new(kiss_font *font, char *fname, kiss_array *a, int size)
 	return 0;
 }
 
+void read_pngs(const char *dirPNGC, char **kArray)
+{
+	printf("read pngs\n");
+	char* dirPNG = (char*)malloc(sizeof(dirPNGC));
+	strcpy(dirPNG, dirPNGC);
+	kiss_dir *dirPNG_t;
+
+	dirPNG_t = kiss_opendir(dirPNG);
+
+	kiss_dirent *ent;
+
+	kiss_stat s;
+
+	kArray = (char**)malloc(sizeof(char*));
+
+	unsigned n = 0;
+	while((ent = kiss_readdir(dirPNG_t)))
+	{
+		if(!ent->d_name) continue;
+		kiss_getstat(ent->d_name, &s);
+
+		//if(kiss_isreg(s))
+		//{
+			char png[4];
+			unsigned in = 2;
+			for(unsigned i = 0; i < 3; ++i)
+			{
+				png[in] = (ent->d_name[strlen(ent->d_name)-(i+1)]);
+				--in;
+			}
+
+			if(!strcmp(png, "png"))
+			{
+				char **kArrayTemp = (char**)malloc(sizeof(kArray));
+				for(int i = 0; i < n; ++i)
+				{
+					strcpy(kArrayTemp[i], kArray[i]);
+				}
+				free(kArray);
+				kArray = (char**)malloc(sizeof(kArrayTemp) + sizeof(ent->d_name));
+				for(int i = 0; i < n; ++i)
+				{
+					strcpy(kArray[i], kArrayTemp[i]);
+				}
+				strcpy(kArray[n+1], ent->d_name);
+				printf("%s\n", kArray[i]);
+
+				n++;
+			}
+		//}
+	}
+	kiss_closedir(dirPNG_t);
+}
+	
+
 SDL_Renderer* kiss_init(const char* kiss_dire, const char* title, kiss_array *a, int w, int h)
 {
-	printf("kiss init()");
 	SDL_Window *window;
 	SDL_Renderer *renderer;
 	SDL_Rect srect;
@@ -200,93 +254,34 @@ SDL_Renderer* kiss_init(const char* kiss_dire, const char* title, kiss_array *a,
 	// I'll optimize and organize this crappy code later
 	// I know this is a shit crap
 	// And it's not from the lib, I made this shit
-	char* kiss_strDire = (char*)malloc(300 * sizeof(char));
-	strcpy(kiss_strDire, kiss_dire);
-	strcat(kiss_strDire, "kiss_font.ttf");
-	r += kiss_font_new(&kiss_textfont, kiss_strDire, a,
+	char* kiss_strDire2 = (char*)malloc(300 * sizeof(char));
+	strcpy(kiss_strDire2, kiss_dire);
+	strcat(kiss_strDire2, "kiss_font.ttf");
+
+	kiss_array *kArray;
+
+	kiss_array_free(kArray);
+	kiss_array_new(kArray);
+
+	read_pngs(kiss_dire, &kArray);
+
+	r += kiss_font_new(&kiss_textfont, kiss_strDire2, a,
 		kiss_textfont_size);
-	r += kiss_font_new(&kiss_buttonfont, kiss_strDire, a,
+	r += kiss_font_new(&kiss_buttonfont, kiss_strDire2, a,
 		kiss_buttonfont_size);
-	free(kiss_strDire);
+	free(kiss_strDire2);
 
-	kiss_strDire = (char*)malloc(300 * sizeof(char));
-	strcpy(kiss_strDire, kiss_dire);
-	strcat(kiss_strDire, "kiss_normal.png");
-	r += kiss_image_new(&kiss_normal, kiss_strDire, a, renderer);
-	free(kiss_strDire);
-
-	kiss_strDire = (char*)malloc(300 * sizeof(char));
-	strcpy(kiss_strDire, kiss_dire);
-	strcat(kiss_strDire, "kiss_prelight.png");
-	r += kiss_image_new(&kiss_prelight, kiss_strDire, a, renderer);
-	free(kiss_strDire);
-	
-	kiss_strDire = (char*)malloc(300 * sizeof(char));
-	strcpy(kiss_strDire, kiss_dire);
-	strcat(kiss_strDire, "kiss_active.png");
-	r += kiss_image_new(&kiss_active, kiss_strDire, a, renderer);
-	free(kiss_strDire);
-
-	kiss_strDire = (char*)malloc(300 * sizeof(char));
-	strcpy(kiss_strDire, kiss_dire);
-	strcat(kiss_strDire, "kiss_bar.png");
-	r += kiss_image_new(&kiss_bar, kiss_strDire, a, renderer);
-	free(kiss_strDire);
-
-	kiss_strDire = (char*)malloc(300 * sizeof(char));
-	strcpy(kiss_strDire, kiss_dire);
-	strcat(kiss_strDire, "kiss_vslider.png");
-	r += kiss_image_new(&kiss_vslider, kiss_strDire, a, renderer);
-	free(kiss_strDire);
-
-	kiss_strDire = (char*)malloc(300 * sizeof(char));
-	strcpy(kiss_strDire, kiss_dire);
-	strcat(kiss_strDire, "kiss_hslider.png");
-	r += kiss_image_new(&kiss_hslider, kiss_strDire, a, renderer);
-	free(kiss_strDire);
-
-	kiss_strDire = (char*)malloc(300 * sizeof(char));
-	strcpy(kiss_strDire, kiss_dire);
-	strcat(kiss_strDire, "kiss_up.png");
-	r += kiss_image_new(&kiss_up, kiss_strDire, a, renderer);
-	free(kiss_strDire);
-
-	kiss_strDire = (char*)malloc(300 * sizeof(char));
-	strcpy(kiss_strDire, kiss_dire);
-	strcat(kiss_strDire, "kiss_down.png");
-	r += kiss_image_new(&kiss_down, kiss_strDire, a, renderer);
-	free(kiss_strDire);
-
-	kiss_strDire = (char*)malloc(300 * sizeof(char));
-	strcpy(kiss_strDire, kiss_dire);
-	strcat(kiss_strDire, "kiss_left.png");
-	r += kiss_image_new(&kiss_left, kiss_strDire, a, renderer);
-	free(kiss_strDire);
-
-	kiss_strDire = (char*)malloc(300 * sizeof(char));
-	strcpy(kiss_strDire, kiss_dire);
-	strcat(kiss_strDire, "kiss_right.png");
-	r += kiss_image_new(&kiss_right, kiss_strDire, a, renderer);
-	free(kiss_strDire);
-
-	kiss_strDire = (char*)malloc(300 * sizeof(char));
-	strcpy(kiss_strDire, kiss_dire);
-	strcat(kiss_strDire, "kiss_combo.png");
-	r += kiss_image_new(&kiss_combo, kiss_strDire, a, renderer);
-	free(kiss_strDire);
-
-	kiss_strDire = (char*)malloc(300 * sizeof(char));
-	strcpy(kiss_strDire, kiss_dire);
-	strcat(kiss_strDire, "kiss_selected.png");
-	r += kiss_image_new(&kiss_selected, kiss_strDire, a, renderer);
-	free(kiss_strDire);
-
-	kiss_strDire = (char*)malloc(300 * sizeof(char));
-	strcpy(kiss_strDire, kiss_dire);
-	strcat(kiss_strDire, "kiss_unselected.png");
-	r += kiss_image_new(&kiss_unselected, kiss_strDire, a,
-		renderer);
-	free(kiss_strDire);
+	for(int i = 0; i < kArray->length; ++i)
+	{
+		printf("%i\n", i);
+		printf("%p\n", *kiss_array_data(kArray, i));
+		char *kiss_strDire = (char*)malloc(sizeof(kArray->data) +
+				sizeof(kiss_dire));
+		strcpy(kiss_strDire, kiss_dire);
+		strcat(kiss_strDire, kArray->data[i]);
+		r += kiss_image_new(&kiss_imagesPNG[i], kiss_strDire, a, renderer);
+		free(kiss_strDire);
+	}
 
 	if (r) {
 		kiss_clean(a);

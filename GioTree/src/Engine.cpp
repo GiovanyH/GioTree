@@ -273,6 +273,7 @@ int main()
         textbox_height = 100;
         window2_width = 320;
         window2_height = 150;
+	std::cout << "renderer abaixo" << std::endl;
         renderer = kiss_init(wDir.c_str(), "Escolha um projeto", &objects, 640, 300);
         if (!renderer) return 1;
         kiss_array_new(&a1);
