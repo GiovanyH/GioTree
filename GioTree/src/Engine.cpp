@@ -22,40 +22,6 @@ static void text_reset(kiss_textbox *textbox, kiss_vscrollbar *vscrollbar)
 /* Read directory entries into the textboxes */    
 static void dirent_read(kiss_textbox *textbox, kiss_vscrollbar *vscrollbar, kiss_label *label_sel)    
 {                                                        
-        /*kiss_dirent *ent;    
-        kiss_stat s;                                               
-	kiss_dir *dir;
-        char buf[KISS_MAX_LENGTH], ending[2];    
-                                                                                 
-        kiss_array_free(textbox->array);                               
-        kiss_array_new(textbox->array);
-        kiss_getcwd(buf, KISS_MAX_LENGTH);
-        strcpy(ending, "/");
-        if (buf[0] == 'C') strcpy(ending, "\\");
-	char usrDir[300];
-	strcpy(usrDir, buf);
-	strcat(usrDir, ending); strcat(usrDir, "GioTree");
-	strcat(usrDir, ending); strcat(usrDir, "usr");
-	strcpy(buf, usrDir);
-        if (!strcmp(buf, "/") || !strcmp(buf, "C:\\")) strcpy(ending, "");
-        kiss_string_copy(label_sel->text, (2 * textbox->rect.w +
-                2 * kiss_up.w) / kiss_textfont.advance, buf, ending);
-#ifdef _MSC_VER
-        dir = kiss_opendir("GioTree/usr");
-#else
-        dir = kiss_opendir("GioTree/usr");
-#endif
-        while ((ent = kiss_readdir(dir))) {
-                if (!ent->d_name) continue;
-                kiss_getstat(ent->d_name, &s);
-                if (kiss_isreg(s))
-                        kiss_array_appendstring(textbox->array, 0,
-                                ent->d_name, NULL);
-        }
-        kiss_closedir(dir);
-        text_reset(textbox, vscrollbar); */
-
-
         Core::init();
         
         Log::info("Engine inicializada!");
@@ -72,10 +38,6 @@ static void dirent_read(kiss_textbox *textbox, kiss_vscrollbar *vscrollbar, kiss
 			kiss_array_appendstring(textbox->array, 0, projectProjects, NULL);
 			free(projectProjects);
                 }
-
-                //std::cout << "[" << project.projects.size() << "] - Novo projeto" << std::endl;
-                //std::cout << ">> ";
-                //std::cin >> opt;
         }
         if(project.projects.size() == 0 or opt == project.projects.size())
         {

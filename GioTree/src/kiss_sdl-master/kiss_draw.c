@@ -168,51 +168,35 @@ int kiss_font_new(kiss_font *font, char *fname, kiss_array *a, int size)
 	return 0;
 }
 
-void read_pngs(const char *dirPNGC, kiss_array **strings)
+void read_pngs(kiss_array **strings)
 {
-	printf("read pngs\n");
-	char* dirPNG = (char*)malloc(sizeof(dirPNGC));
-	strcpy(dirPNG, dirPNGC);
-	kiss_dir *dirPNG_t;
-
-	dirPNG_t = kiss_opendir(dirPNG);
-
-	kiss_dirent *ent;
-
-	kiss_stat s;
-
 	kiss_array_free(*strings);
 	kiss_array_new(*strings);
-	unsigned n = 0;
-	while((ent = kiss_readdir(dirPNG_t)))
-	{
-		if(!ent->d_name) continue;
-		kiss_getstat(ent->d_name, &s);
 
+	kiss_array_appendstring(*strings,  0,     "kiss_normal.png", NULL);
+	kiss_array_appendstring(*strings,  1,   "kiss_prelight.png", NULL);
+	kiss_array_appendstring(*strings,  2,     "kiss_active.png", NULL);
+	kiss_array_appendstring(*strings,  3,        "kiss_bar.png", NULL);
+	kiss_array_appendstring(*strings,  4,         "kiss_up.png", NULL);
+	kiss_array_appendstring(*strings,  5,       "kiss_down.png", NULL);
+	kiss_array_appendstring(*strings,  6,       "kiss_left.png", NULL);
+	kiss_array_appendstring(*strings,  7,      "kiss_right.png", NULL);
+	kiss_array_appendstring(*strings,  8,    "kiss_vslider.png", NULL);
+	kiss_array_appendstring(*strings,  9,    "kiss_hslider.png", NULL);
+	kiss_array_appendstring(*strings, 10,   "kiss_selected.png", NULL);
+	kiss_array_appendstring(*strings, 11, "kiss_unselected.png", NULL);
+	kiss_array_appendstring(*strings, 12,      "kiss_combo.png", NULL);
+}
 
-
-		char png[4];
-		unsigned in = 2;
-		for(unsigned i = 0; i < 3; ++i)
-		{
-			png[in] = (ent->d_name[strlen(ent->d_name)-(i+1)]);
-			--in;
-		}
-
-		if(!strcmp(png, "png"))
-		{
-			kiss_array_appendstring(*strings, 0, ent->d_name, NULL);
-			char buf[KISS_MAX_LENGTH];
-			kiss_string_copy(buf, kiss_maxlength(kiss_textfont, 500,
-						(char *) kiss_array_data(*strings, n), NULL),
-						(char *) kiss_array_data(*strings, n), NULL);
-			printf("%s\n", buf);
-			n++;
-		}
-	}
-	kiss_closedir(dirPNG_t);
+static int myCompare(const void* a, const void* b) 
+{ 
+    return strcmp(*(const char**)a, *(const char**)b); 
 }
 	
+void sort(char *(*arr)[13], int n) 
+{ 
+    qsort(*arr, n, sizeof(const char*), myCompare); 
+} 
 
 SDL_Renderer* kiss_init(const char* kiss_dire, const char* title, kiss_array *a, int w, int h)
 {
@@ -246,7 +230,7 @@ SDL_Renderer* kiss_init(const char* kiss_dire, const char* title, kiss_array *a,
 
 	kiss_array *strings = (kiss_array*)malloc(sizeof(kiss_array));
 
-	read_pngs(kiss_dire, &strings);
+	read_pngs(&strings);
 
 	r += kiss_font_new(&kiss_textfont, kiss_strDire2, a,
 		kiss_textfont_size);
@@ -255,15 +239,15 @@ SDL_Renderer* kiss_init(const char* kiss_dire, const char* title, kiss_array *a,
 	free(kiss_strDire2);
 
 
-	printf("%s\n", (char*) kiss_array_data(strings, 0));
-
 	for(int i = 0; i < 13; ++i)
 	{
 		char *kissArrayCpy = (char*)malloc(sizeof(char) * strlen(kiss_dire) + sizeof(char) * strlen((char*) kiss_array_data(strings, i)));
 		strcpy(kissArrayCpy, kiss_dire);
 		strcat(kissArrayCpy, (char*) kiss_array_data(strings, i));
+
 		printf("%s\n", (char*) kiss_array_data(strings, i));
 		printf("%s\n", kissArrayCpy);
+
 		r += kiss_image_new(&kiss_imagesPNG[i], kissArrayCpy, a, renderer);
 		free(kissArrayCpy);
 	}
