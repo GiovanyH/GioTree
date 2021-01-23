@@ -168,7 +168,7 @@ int kiss_font_new(kiss_font *font, char *fname, kiss_array *a, int size)
 	return 0;
 }
 
-void read_pngs(const char *dirPNGC, char **kArray)
+void read_pngs(const char *dirPNGC, kiss_array **strings)
 {
 	printf("read pngs\n");
 	char* dirPNG = (char*)malloc(sizeof(dirPNGC));
@@ -181,64 +181,34 @@ void read_pngs(const char *dirPNGC, char **kArray)
 
 	kiss_stat s;
 
-	kArray = (char**)malloc(sizeof(ent->d_name) + sizeof(char));
-	*kArray = (char*)malloc(sizeof(char));
-
+	kiss_array_free(*strings);
+	kiss_array_new(*strings);
 	unsigned n = 0;
 	while((ent = kiss_readdir(dirPNG_t)))
 	{
-		printf("again\n");
 		if(!ent->d_name) continue;
 		kiss_getstat(ent->d_name, &s);
 
 
-		printf("sksiad\n");
 
-		//if(kiss_isreg(s))
-		//{
-			char png[4];
-			unsigned in = 2;
-			for(unsigned i = 0; i < 3; ++i)
-			{
-				png[in] = (ent->d_name[strlen(ent->d_name)-(i+1)]);
-				--in;
-			}
+		char png[4];
+		unsigned in = 2;
+		for(unsigned i = 0; i < 3; ++i)
+		{
+			png[in] = (ent->d_name[strlen(ent->d_name)-(i+1)]);
+			--in;
+		}
 
-			if(!strcmp(png, "png"))
-			{
-
-				printf("strcpy here\n");
-				strcpy(kArray[n], ent->d_name);
-				printf("strcpy here termina\n");
-				char **kArrayTemp = (char**)malloc(sizeof(kArray) + sizeof(char));
-				*kArrayTemp = (char*)malloc(sizeof(*kArray) + sizeof(char));
-				printf("arraytmp size = %li\n", sizeof(kArrayTemp));
-				printf("kArrayTemp malloc\n");
-				for(int i = 0; i <= n; ++i)
-				{
-					strcpy(kArrayTemp[i], kArray[i]);
-					printf("strcpy kAr kArTmp\n");
-				}
-
-				free(kArray);
-				kArray = (char**)malloc(sizeof(kArrayTemp) + sizeof(ent->d_name) + sizeof(char));
-				*kArray = (char*)malloc(sizeof(*kArrayTemp) + sizeof(char));
-				printf("sizeof kArray = %li\n", sizeof(kArray));
-				printf("kArray = malloc\n");
-				for(int i = 0; i <= n; ++i)
-				{
-					printf("copying\n");
-					strcpy(kArray[i], kArrayTemp[i]);
-					printf("strcpy kArray kArrayTemp\n");
-				}
-
-				free(kArrayTemp);
-				printf("%s\n", kArray[0]);
-
-
-				n++;
-			}
-		//}
+		if(!strcmp(png, "png"))
+		{
+			kiss_array_appendstring(*strings, 0, ent->d_name, NULL);
+			char buf[KISS_MAX_LENGTH];
+			kiss_string_copy(buf, kiss_maxlength(kiss_textfont, 500,
+						(char *) kiss_array_data(*strings, n), NULL),
+						(char *) kiss_array_data(*strings, n), NULL);
+			printf("%s\n", buf);
+			n++;
+		}
 	}
 	kiss_closedir(dirPNG_t);
 }
@@ -270,16 +240,13 @@ SDL_Renderer* kiss_init(const char* kiss_dire, const char* title, kiss_array *a,
 		SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	if (renderer) kiss_array_append(a, RENDERER_TYPE, renderer);
 
-	// I'll optimize and organize this crappy code later
-	// I know this is a shit crap
-	// And it's not from the lib, I made this shit
-	char* kiss_strDire2 = (char*)malloc(300 * sizeof(char));
+	char *kiss_strDire2 = (char*)malloc(sizeof(char) * strlen(kiss_dire) + sizeof(char) * strlen("kiss_font.ttf") + 1);
 	strcpy(kiss_strDire2, kiss_dire);
 	strcat(kiss_strDire2, "kiss_font.ttf");
 
-	char **kArray;
+	kiss_array *strings = (kiss_array*)malloc(sizeof(kiss_array));
 
-	read_pngs(kiss_dire, kArray);
+	read_pngs(kiss_dire, &strings);
 
 	r += kiss_font_new(&kiss_textfont, kiss_strDire2, a,
 		kiss_textfont_size);
@@ -287,15 +254,18 @@ SDL_Renderer* kiss_init(const char* kiss_dire, const char* title, kiss_array *a,
 		kiss_buttonfont_size);
 	free(kiss_strDire2);
 
-	for(int i = 0; i < strlen(kArray); ++i)
+
+	printf("%s\n", (char*) kiss_array_data(strings, 0));
+
+	for(int i = 0; i < 13; ++i)
 	{
-		printf("%i\n", i);
-		//char *kiss_strDire = (char*)malloc(sizeof(kArray->data) +
-		//		sizeof(kiss_dire));
-		//strcpy(kiss_strDire, kiss_dire);
-		//strcat(kiss_strDire, kArray->data[i]);
-		//r += kiss_image_new(&kiss_imagesPNG[i], kiss_strDire, a, renderer);
-		//free(kiss_strDire);
+		char *kissArrayCpy = (char*)malloc(sizeof(char) * strlen(kiss_dire) + sizeof(char) * strlen((char*) kiss_array_data(strings, i)));
+		strcpy(kissArrayCpy, kiss_dire);
+		strcat(kissArrayCpy, (char*) kiss_array_data(strings, i));
+		printf("%s\n", (char*) kiss_array_data(strings, i));
+		printf("%s\n", kissArrayCpy);
+		r += kiss_image_new(&kiss_imagesPNG[i], kissArrayCpy, a, renderer);
+		free(kissArrayCpy);
 	}
 
 	if (r) {

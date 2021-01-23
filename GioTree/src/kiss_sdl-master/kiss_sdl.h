@@ -263,7 +263,7 @@ extern kiss_font kiss_textfont, kiss_buttonfont;
 //extern kiss_image kiss_normal, kiss_prelight, kiss_active, kiss_bar,
 //	kiss_up, kiss_down, kiss_left, kiss_right, kiss_vslider,
 //	kiss_hslider, kiss_selected, kiss_unselected, kiss_combo;
-kiss_image kiss_imagesPNG[13];
+extern kiss_image kiss_imagesPNG[13];
 extern double kiss_spacing;
 extern int kiss_textfont_size, kiss_buttonfont_size;
 extern int kiss_click_interval, kiss_progress_interval;
