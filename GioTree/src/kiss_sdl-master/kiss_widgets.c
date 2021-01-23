@@ -105,11 +105,11 @@ int kiss_button_new(kiss_button *button, kiss_window *wdw, char *text,
 	if (!button || !text) return -1;
 	if (button->font.magic != KISS_MAGIC) button->font = kiss_buttonfont;
 	if (button->normalimg.magic != KISS_MAGIC)
-		button->normalimg = kiss_normal;
+		button->normalimg = /*kiss_normal*/ kiss_imagesPNG[0];
 	if (button->activeimg.magic != KISS_MAGIC)
-		button->activeimg = kiss_active;
+		button->activeimg = /*kiss_active*/ kiss_imagesPNG[2];
 	if (button->prelightimg.magic != KISS_MAGIC)
-		button->prelightimg = kiss_prelight;
+		button->prelightimg = /*kiss_prelight*/ kiss_imagesPNG[1];
 	kiss_makerect(&button->rect, x, y, button->normalimg.w,
 		button->normalimg.h);
 	button->textcolor = kiss_white;
@@ -187,9 +187,9 @@ int kiss_selectbutton_new(kiss_selectbutton *selectbutton, kiss_window *wdw,
 {
 	if (!selectbutton) return -1;
 	if (selectbutton->selectedimg.magic != KISS_MAGIC)
-		selectbutton->selectedimg = kiss_selected;
+		selectbutton->selectedimg = /*kiss_selected*/ kiss_imagesPNG[11];
 	if (selectbutton->unselectedimg.magic != KISS_MAGIC)
-		selectbutton->unselectedimg = kiss_unselected;
+		selectbutton->unselectedimg = /*kiss_unselected*/ kiss_imagesPNG[12];
 	kiss_makerect(&selectbutton->rect, x, y, selectbutton->selectedimg.w,
 		selectbutton->selectedimg.h);
 	selectbutton->selected = 0;
@@ -238,11 +238,11 @@ int kiss_vscrollbar_new(kiss_vscrollbar *vscrollbar, kiss_window *wdw,
 {
 	if (!vscrollbar) return -1;
 	if (vscrollbar->up.magic != KISS_MAGIC)
-		vscrollbar->up = kiss_up;
+		vscrollbar->up = /*kiss_up*/ kiss_imagesPNG[4];
 	if (vscrollbar->down.magic != KISS_MAGIC)
-		vscrollbar->down = kiss_down;
+		vscrollbar->down = /*kiss_down*/ kiss_imagesPNG[5];
 	if (vscrollbar->vslider.magic != KISS_MAGIC)
-		vscrollbar->vslider = kiss_vslider;
+		vscrollbar->vslider = /*kiss_vslider*/ kiss_imagesPNG[8];
 	if (vscrollbar->up.h + vscrollbar->down.h + 2 * kiss_edge +
 		2 * kiss_slider_padding + vscrollbar->vslider.h > h)
 		return -1;
@@ -374,11 +374,11 @@ int kiss_hscrollbar_new(kiss_hscrollbar *hscrollbar, kiss_window *wdw,
 {
 	if (!hscrollbar) return -1;
 	if (hscrollbar->left.magic != KISS_MAGIC)
-		hscrollbar->left = kiss_left;
+		hscrollbar->left = /*kiss_left*/ kiss_imagesPNG[6];
 	if (hscrollbar->right.magic != KISS_MAGIC)
-		hscrollbar->right = kiss_right;
+		hscrollbar->right = /*kiss_right*/ kiss_imagesPNG[7];
 	if (hscrollbar->hslider.magic != KISS_MAGIC)
-		hscrollbar->hslider = kiss_hslider;
+		hscrollbar->hslider = /*kiss_hslider*/ kiss_imagesPNG[9];
 	if (hscrollbar->left.w + hscrollbar->right.w + 2 * kiss_edge +
 		2 * kiss_slider_padding + hscrollbar->hslider.w > w)
 		return -1;
@@ -513,7 +513,7 @@ int kiss_progressbar_new(kiss_progressbar *progressbar, kiss_window *wdw,
 {
 	if (!progressbar || w < 2 * kiss_border + 1) return -1;
 	if (progressbar->bar.magic != KISS_MAGIC)
-		progressbar->bar = kiss_bar;
+		progressbar->bar = /*kiss_bar*/ kiss_imagesPNG[3];
 	progressbar->bg = kiss_white;
 	kiss_makerect(&progressbar->rect, x, y, w,
 		progressbar->bar.h + 2 * kiss_border);
@@ -779,7 +779,7 @@ int kiss_combobox_new(kiss_combobox *combobox, kiss_window *wdw,
 {
 	if (!combobox || !a || !text) return -1;
 	if (combobox->combo.magic != KISS_MAGIC)
-		combobox->combo = kiss_combo;
+		combobox->combo = /*kiss_combo*/ kiss_imagesPNG[12];
 	kiss_entry_new(&combobox->entry, wdw, 1, text, x, y, w);
 	strcpy(combobox->text, combobox->entry.text);
 	kiss_window_new(&combobox->window, NULL, 0, x,

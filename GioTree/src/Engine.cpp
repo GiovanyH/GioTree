@@ -140,7 +140,7 @@ static void button_ok1_event(kiss_button *button, SDL_Event *e,
 
         if (kiss_button_event(button, e, draw)) {
                 kiss_string_copy(buf, kiss_maxlength(kiss_textfont,
-                        window2->rect.w - 2 * kiss_vslider.w,
+                        window2->rect.w - 2 * /*kiss_vslider.w*/ kiss_imagesPNG[8].w,
                         label_sel->text, entry->text),
                         label_sel->text, entry->text);
                 kiss_string_copy(label_res->text, KISS_MAX_LABEL, 
@@ -293,29 +293,29 @@ int main()
                 kiss_edge, textbox.rect.y - kiss_textfont.lineheight);
         kiss_label_new(&label_sel, &window1, "", textbox.rect.x +
                 kiss_edge, textbox.rect.y + textbox_height +
-			kiss_normal.h);
+			/*kiss_normal.h*/ kiss_imagesPNG[0].h);
         kiss_entry_new(&entry, &window1, 1, "kiss", 160,
                 label_sel.rect.y + kiss_textfont.lineheight,
                 textbox_width);
         kiss_button_new(&button_cancel, &window1, "Cancelar",
-                entry.rect.x + entry.rect.w - kiss_edge - kiss_normal.w,
-                entry.rect.y + entry.rect.h + kiss_normal.h);
+                entry.rect.x + entry.rect.w - kiss_edge - /*kiss_normal.w*/ kiss_imagesPNG[0].w,
+                entry.rect.y + entry.rect.h + /*kiss_normal.h*/ kiss_imagesPNG[0].h);
         kiss_button_new(&button_ok1, &window1, "Abrir", button_cancel.rect.x -
-                2 * kiss_normal.w, button_cancel.rect.y);
+                2 * /*kiss_normal.w*/ kiss_imagesPNG[0].w, button_cancel.rect.y);
         kiss_window_new(&window2, NULL, 1, kiss_screen_width / 2 -
                 window2_width / 2, kiss_screen_height / 2 -
                 window2_height / 2, window2_width, window2_height);
         kiss_label_new(&label_res, &window2, "", window2.rect.x +
-                kiss_up.w, window2.rect.y + kiss_vslider.h);
+                /*kiss_up.w*/ kiss_imagesPNG[4].w, window2.rect.y + /*kiss_vslider.h*/ kiss_imagesPNG[8].h);
         label_res.textcolor = kiss_blue;
         kiss_progressbar_new(&progressbar, &window2, window2.rect.x +
-                kiss_up.w - kiss_edge, window2.rect.y + window2.rect.h / 2 -
-                kiss_bar.h / 2 - kiss_border,
-                window2.rect.w - 2 * kiss_up.w + 2 * kiss_edge);
+                /*kiss_up.w*/ kiss_imagesPNG[4].w - kiss_edge, window2.rect.y + window2.rect.h / 2 -
+                /*kiss_bar.h*/ kiss_imagesPNG[3].h / 2 - kiss_border,
+                window2.rect.w - 2 * /*kiss_up.w*/ kiss_imagesPNG[4].w + 2 * kiss_edge);
         kiss_button_new(&button_ok2, &window2, "OK", window2.rect.x +
-                window2.rect.w / 2 - kiss_normal.w / 2,
+                window2.rect.w / 2 - /*kiss_normal.w*/ kiss_imagesPNG[0].w / 2,
                 progressbar.rect.y + progressbar.rect.h +
-                2 * kiss_vslider.h);
+                2 * /*kiss_vslider.h*/ kiss_imagesPNG[8].h);
 
 	dirent_read(&textbox, &vscrollbar, &label_sel);
 
