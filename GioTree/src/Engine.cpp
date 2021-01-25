@@ -22,8 +22,6 @@ static void text_reset(kiss_textbox *textbox, kiss_vscrollbar *vscrollbar)
 /* Read directory entries into the textboxes */    
 static void dirent_read(kiss_textbox *textbox, kiss_vscrollbar *vscrollbar, kiss_label *label_sel)    
 {                                                        
-        Core::init();
-        
         Log::info("Engine inicializada!");
 
         Project project;     
@@ -93,27 +91,19 @@ static void vscrollbar_event(kiss_vscrollbar *vscrollbar, SDL_Event *e,
         }
 }
 
-static void button_ok1_event(kiss_button *button, SDL_Event *e,
-        kiss_window *window1, kiss_window *window2, kiss_label *label_sel,
-        kiss_entry *entry, kiss_label *label_res,
-        kiss_progressbar *progressbar, int *draw)
+static void projectRun(char *proDir, Project project)
 {
-        char buf[KISS_MAX_LENGTH];
+	project.open("/home/giovany/GioTree/GioTree/usr/", proDir);
+}
+
+static void button_ok1_event(kiss_button *button, SDL_Event *e,
+        kiss_window *window1, kiss_entry *entry, int *draw, Project project)
+{
 
         if (kiss_button_event(button, e, draw)) {
-                kiss_string_copy(buf, kiss_maxlength(kiss_textfont,
-                        window2->rect.w - 2 * /*kiss_vslider.w*/ kiss_imagesPNG[8].w,
-                        label_sel->text, entry->text),
-                        label_sel->text, entry->text);
-                kiss_string_copy(label_res->text, KISS_MAX_LABEL, 
-                        "The following path was selected:\n", buf);
-                window2->visible = 1;
-                window2->focus = 1;
                 window1->focus = 0;
                 button->prelight = 0;
-                progressbar->fraction = 0.;
-                progressbar->run = 1;
-                *draw = 1;
+		projectRun(entry->text, project);
         }
 }
 
@@ -123,23 +113,8 @@ static void button_cancel_event(kiss_button *button, SDL_Event *e,
         if (kiss_button_event(button, e, draw)) *quit = 1;
 }
 
-static void button_ok2_event(kiss_button *button, SDL_Event *e,
-        kiss_window *window1, kiss_window *window2,
-        kiss_progressbar *progressbar, int *draw)
-{
-        if (kiss_button_event(button, e, draw)) {
-                window2->visible = 0;
-                window1->focus = 1;
-                button->prelight = 0;
-                progressbar->fraction = 0.;
-                progressbar->run = 0;
-                *draw = 1;
-        }
-}
-
 int Engine::init()
 {
-	Log::core = "[CORE]";
 	Log::info(dir.c_str());
 
 	window.width = 600; window.height = 400;
@@ -148,7 +123,6 @@ int Engine::init()
 	strcpy(window.title, "Selecione um projeto");
 
 
-	Core::init();
 	window.init(wDir.c_str());
 	
 	Log::info("Engine inicializada!");
@@ -207,7 +181,6 @@ int Engine::init()
 
 int Engine::finish()
 {
-	Core::finish();
 	return 0;
 }
 
@@ -215,13 +188,13 @@ int main()
 {
 	// Engine::init();
 
+	Project project;
 	SDL_Renderer *renderer;
         SDL_Event e;
         kiss_array objects, a1, a2;
-        kiss_window window1, window2;
-        kiss_label label = {0}, label_sel = {0},
-                label_res = {0};
-        kiss_button button_ok1 = {0}, button_ok2 = {0}, button_cancel = {0};
+        kiss_window window1;
+	kiss_label label = {0}, label_sel = {0};
+        kiss_button button_ok1 = {0}, button_cancel = {0};
         kiss_textbox textbox = {0};
         kiss_vscrollbar vscrollbar = {0};
         kiss_progressbar progressbar = {0};
@@ -235,7 +208,6 @@ int main()
         textbox_height = 100;
         window2_width = 320;
         window2_height = 150;
-	std::cout << "renderer abaixo" << std::endl;
         renderer = kiss_init(wDir.c_str(), "Escolha um projeto", &objects, 640, 300);
         if (!renderer) return 1;
         kiss_array_new(&a1);
@@ -264,21 +236,6 @@ int main()
                 entry.rect.y + entry.rect.h + /*kiss_normal.h*/ kiss_imagesPNG[0].h);
         kiss_button_new(&button_ok1, &window1, "Abrir", button_cancel.rect.x -
                 2 * /*kiss_normal.w*/ kiss_imagesPNG[0].w, button_cancel.rect.y);
-        kiss_window_new(&window2, NULL, 1, kiss_screen_width / 2 -
-                window2_width / 2, kiss_screen_height / 2 -
-                window2_height / 2, window2_width, window2_height);
-        kiss_label_new(&label_res, &window2, "", window2.rect.x +
-                /*kiss_up.w*/ kiss_imagesPNG[4].w, window2.rect.y + /*kiss_vslider.h*/ kiss_imagesPNG[8].h);
-        label_res.textcolor = kiss_blue;
-        kiss_progressbar_new(&progressbar, &window2, window2.rect.x +
-                /*kiss_up.w*/ kiss_imagesPNG[4].w - kiss_edge, window2.rect.y + window2.rect.h / 2 -
-                /*kiss_bar.h*/ kiss_imagesPNG[3].h / 2 - kiss_border,
-                window2.rect.w - 2 * /*kiss_up.w*/ kiss_imagesPNG[4].w + 2 * kiss_edge);
-        kiss_button_new(&button_ok2, &window2, "OK", window2.rect.x +
-                window2.rect.w / 2 - /*kiss_normal.w*/ kiss_imagesPNG[0].w / 2,
-                progressbar.rect.y + progressbar.rect.h +
-                2 * /*kiss_vslider.h*/ kiss_imagesPNG[8].h);
-
 	dirent_read(&textbox, &vscrollbar, &label_sel);
 
 	/* Do that, and all widgets associated with the window will show */
@@ -291,20 +248,15 @@ int main()
 		{
 			if(e.type == SDL_QUIT) quit = 1;			
 
-			kiss_window_event(&window2, &e, &draw);
                         kiss_window_event(&window1, &e, &draw);
 			textbox_event(&textbox, &e, &entry,
                                 &draw);
                         vscrollbar_event(&vscrollbar, &e, &textbox,
                                 &draw);
-                        button_ok1_event(&button_ok1, &e, &window1, &window2,
-                                &label_sel, &entry, &label_res, &progressbar,
-                                &draw);
+                        button_ok1_event(&button_ok1, &e, &window1, &entry, &draw, project);
                         button_cancel_event(&button_cancel, &e, &quit,
                                 &draw);
                         kiss_entry_event(&entry, &e, &draw);
-                        button_ok2_event(&button_ok2, &e, &window1, &window2,
-                                &progressbar, &draw);
 		}
 
                 vscrollbar_event(&vscrollbar, NULL, &textbox, &draw);
@@ -321,10 +273,6 @@ int main()
                 kiss_entry_draw(&entry, renderer);
                 kiss_button_draw(&button_ok1, renderer);
                 kiss_button_draw(&button_cancel, renderer);
-                kiss_window_draw(&window2, renderer);
-                kiss_label_draw(&label_res, renderer);
-                kiss_progressbar_draw(&progressbar, renderer);
-                kiss_button_draw(&button_ok2, renderer);
 
                 SDL_RenderPresent(renderer);
                 draw = 0;

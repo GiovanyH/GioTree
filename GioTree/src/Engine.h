@@ -7,7 +7,6 @@
 #include <unistd.h>
 #endif
 #include <sys/wait.h>
-#include "core.h"
 #include "log.h"
 #include "window.c"
 #include "projectManager.h"

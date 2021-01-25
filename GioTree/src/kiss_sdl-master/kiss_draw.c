@@ -188,16 +188,6 @@ void read_pngs(kiss_array **strings)
 	kiss_array_appendstring(*strings, 12,      "kiss_combo.png", NULL);
 }
 
-static int myCompare(const void* a, const void* b) 
-{ 
-    return strcmp(*(const char**)a, *(const char**)b); 
-}
-	
-void sort(char *(*arr)[13], int n) 
-{ 
-    qsort(*arr, n, sizeof(const char*), myCompare); 
-} 
-
 SDL_Renderer* kiss_init(const char* kiss_dire, const char* title, kiss_array *a, int w, int h)
 {
 	SDL_Window *window;

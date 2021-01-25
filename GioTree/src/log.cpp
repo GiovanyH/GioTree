@@ -48,7 +48,6 @@ void Log::warnf(const char *mess, const char *file, unsigned line)
 
 void Log::errorf(const char *mess, const char *file, unsigned line)
 {
-	Core::errors++;
 	printf("\033[37m%s \033[0m %s \033[31m[ERRO]:  \033[0m%s, \033[36m[%s, linha %i]\033[0m\n",
 			pretty_time().c_str(), core.c_str(), mess, file, line);
 }

@@ -48,7 +48,7 @@ BIN = GioEngine
 all: $(BIN)
 
 $(BIN): GioTree/src/Engine.o GioTree/src/kiss_sdl-master/kiss_widgets.o GioTree/src/kiss_sdl-master/kiss_draw.o GioTree/src/kiss_sdl-master/kiss_general.o \
-GioTree/src/kiss_sdl-master/kiss_posix.o GioTree/src/core.o GioTree/src/window.o GioTree/src/projectManager.o GioTree/src/log.o 
+GioTree/src/kiss_sdl-master/kiss_posix.o GioTree/src/window.o GioTree/src/projectManager.o GioTree/src/log.o 
 	$(CPP) $^ $(LDFLAGS) -o $@
 
 GioTree/src/Engine.o: GioTree/src/Engine.cpp
@@ -65,9 +65,6 @@ GioTree/src/kiss_sdl-master/kiss_general.o: GioTree/src/kiss_sdl-master/kiss_gen
 
 GioTree/src/kiss_sdl-master/kiss_posix.o: GioTree/src/kiss_sdl-master/kiss_posix.c
 	$(C) $(CFLAGS) $^ -o $@
-
-GioTree/src/core.o:  GioTree/src/core.cpp
-	$(CPP) $^ $(CFLAGS) -o $@
 
 GioTree/src/window.o: GioTree/src/window.c
 	$(CPP) $^ $(CFLAGS) -o $@

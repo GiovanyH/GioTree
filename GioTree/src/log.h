@@ -3,7 +3,6 @@
 #include <sstream>
 #include <chrono>
 #include <ctime>
-#include "core.h"
 
 // Pra debuggar
 namespace Log
