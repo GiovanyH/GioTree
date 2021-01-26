@@ -1,21 +1,5 @@
 #include "projectManager.h"
 
-void Project::see(std::string pDirs)
-{
-	std::string EngineFile = pDirs + "/GioTree/usr/";
-
-	for(const auto & entry : cu::directory_iterator(EngineFile))
-	{
-		std::string current_path = entry.path();
-		current_path.erase(current_path.begin(), current_path.begin() + EngineFile.size());
-
-		std::string extension = current_path;
-		extension.erase(extension.begin(), extension.end()-4);
-		if(extension == ".gio")
-			projects.push_back(current_path);
-	}
-}
-
 void Project::create(std::string pName = "default", std::string pDir = "/home/user/Documents/", std::string eDir = "/home/GioTree/GioTree/src/Engine.h")
 {
 	std::string GameFolder = pDir + pName;

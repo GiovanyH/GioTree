@@ -19,46 +19,6 @@ static void text_reset(kiss_textbox *textbox, kiss_vscrollbar *vscrollbar)
         vscrollbar->fraction = 0.;    
 }
 
-/* Read directory entries into the textboxes */    
-static void dirent_read(kiss_textbox *textbox, kiss_vscrollbar *vscrollbar, kiss_label *label_sel)    
-{                                                        
-        Log::info("Engine inicializada!");
-
-        Project project;     
-        project.see(Engine::dir);                                    
-        unsigned opt = 0;       
-        if(project.projects.size() > 0)
-        {
-                for(int p = 0; p < project.projects.size(); ++p)
-                {
-			char *projectProjects = (char*)malloc(sizeof(project.projects.at(p).c_str()));
-			strcpy(projectProjects, project.projects.at(p).c_str());
-			kiss_array_appendstring(textbox->array, 0, projectProjects, NULL);
-			free(projectProjects);
-                }
-        }
-        if(project.projects.size() == 0 or opt == project.projects.size())
-        {
-                std::cout << "Criando um projeto!" << std::endl;
-                std::string pName;
-                std::cout << "Nome do projeto: ";
-                std::cin >> pName;
-                std::string pDir;
-                std::cout << std::endl << "Diretorio do projeto: ";
-                std::cin >> pDir;
-
-                std::cout << std::endl;
-
-                project.create(pName, pDir, Engine::dir);
-        }
-        //else if(project.projects.size() > 0 && opt < project.projects.size())
-        //{
-            //    project.open(Engine::dir, project.projects.at(opt));
-        //}
-
-
-}
-
 /* The widget arguments are widgets that this widget talks with */
 static void textbox_event(kiss_textbox *textbox, SDL_Event *e, kiss_entry *entry, int *draw)
 {
@@ -93,7 +53,7 @@ static void vscrollbar_event(kiss_vscrollbar *vscrollbar, SDL_Event *e,
 
 static void projectRun(char *proDir, Project project)
 {
-	project.open("/home/giovany/GioTree/GioTree/usr/", proDir);
+	project.open(Engine::dir, proDir);
 }
 
 static void button_ok1_event(kiss_button *button, SDL_Event *e,
@@ -115,33 +75,9 @@ static void button_cancel_event(kiss_button *button, SDL_Event *e,
 
 int Engine::init()
 {
-	Log::info(dir.c_str());
-
-	window.width = 600; window.height = 400;
-
-	window.title = (char*)malloc(sizeof(project_name.c_str()));
-	strcpy(window.title, "Selecione um projeto");
-
-
-	window.init(wDir.c_str());
-	
-	Log::info("Engine inicializada!");
-
+	Log::info("Engine iniciada!");
 	Project project;     
-        project.see(dir);                                    
         unsigned opt = 0;	
-	if(project.projects.size() > 0)
-	{
-        	std::cout << "Selecione uma opçao:" << std::endl; 
-        	for(int p = 0; p < project.projects.size(); ++p)
-        	{
-               		std::cout << "[" << p << "] - " << project.projects.at(p) << std::endl;
-        	}
-
-        	std::cout << "[" << project.projects.size() << "] - Novo projeto" << std::endl;
-        	std::cout << ">> ";
-        	std::cin >> opt;
-	}
 	if(project.projects.size() == 0 or opt == project.projects.size())
 	{
 		std::cout << "Criando um projeto!" << std::endl;
@@ -181,6 +117,7 @@ int Engine::init()
 
 int Engine::finish()
 {
+	Log::info("Engine finalizada!");
 	return 0;
 }
 
@@ -189,6 +126,7 @@ int main()
 	// Engine::init();
 
 	Project project;
+	// UI
 	SDL_Renderer *renderer;
         SDL_Event e;
         kiss_array objects, a1, a2;
@@ -226,21 +164,21 @@ int main()
         kiss_label_new(&label, &window1, "Projetos", textbox.rect.x +
                 kiss_edge, textbox.rect.y - kiss_textfont.lineheight);
         kiss_label_new(&label_sel, &window1, "", textbox.rect.x +
-                kiss_edge, textbox.rect.y + textbox_height +
-			/*kiss_normal.h*/ kiss_imagesPNG[0].h);
+                kiss_edge, textbox.rect.y + textbox_height + kiss_imagesPNG[0].h);
         kiss_entry_new(&entry, &window1, 1, "kiss", 160,
                 label_sel.rect.y + kiss_textfont.lineheight,
                 textbox_width);
         kiss_button_new(&button_cancel, &window1, "Cancelar",
-                entry.rect.x + entry.rect.w - kiss_edge - /*kiss_normal.w*/ kiss_imagesPNG[0].w,
-                entry.rect.y + entry.rect.h + /*kiss_normal.h*/ kiss_imagesPNG[0].h);
+                entry.rect.x + entry.rect.w - kiss_edge - kiss_imagesPNG[0].w,
+                entry.rect.y + entry.rect.h + kiss_imagesPNG[0].h);
         kiss_button_new(&button_ok1, &window1, "Abrir", button_cancel.rect.x -
-                2 * /*kiss_normal.w*/ kiss_imagesPNG[0].w, button_cancel.rect.y);
+                2 * kiss_imagesPNG[0].w, button_cancel.rect.y);
 	dirent_read(&textbox, &vscrollbar, &label_sel);
 
 	/* Do that, and all widgets associated with the window will show */
         window1.visible = 1;
 
+	// Main Engine loop
 	while(!quit/* Core::running */)
 	{
 		SDL_Delay(10);
@@ -265,6 +203,7 @@ int main()
                 if (!draw) continue;
                 SDL_RenderClear(renderer);
 
+		// Rendering
                 kiss_window_draw(&window1, renderer);
                 kiss_label_draw(&label, renderer);
                 kiss_vscrollbar_draw(&vscrollbar, renderer);
