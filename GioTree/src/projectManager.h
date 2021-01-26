@@ -4,7 +4,14 @@
 #include <filesystem>
 #include <iostream>
 #include <vector>
+#if defined(_MSC_VER)
+#include <direct.h>
+#else
+#include <unistd.h>
+#endif
+#include <sys/wait.h>
 #include "log.h"
+#include "window.c"
 
 namespace cu = std::filesystem;
 
@@ -20,4 +27,7 @@ struct Project
 	void create(std::string pName, std::string pDir, std::string eDir);
 	void open(std::string dir, std::string pName);
 	void remove();
+
+	void init(std::string Engine_dir);
+	void finish();
 };
