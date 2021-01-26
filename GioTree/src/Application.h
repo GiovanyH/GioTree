@@ -2,10 +2,11 @@
 
 #include <string>
 #include "log.h"
-#include "core.h"
+#include <SDL2/SDL.h>
 
 namespace Application
 {
+	extern bool running;
 	extern std::string project_name;
 
 	extern void init();

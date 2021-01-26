@@ -6,6 +6,37 @@ std::string wDir = (Engine::dir + "/GioTree/src/kiss_sdl-master/");
 
 window_t window;
 
+static void dirent_read(kiss_textbox *textbox, kiss_vscrollbar *vscrollbar, kiss_label *label_sel)    
+{                                                        
+        Project project;     
+        project.see(Engine::dir);                                    
+        unsigned opt = 0;       
+        if(project.projects.size() > 0)
+        {
+                for(int p = 0; p < project.projects.size(); ++p)
+                {
+			char *projectProjects = (char*)malloc(sizeof(project.projects.at(p).c_str()));
+			strcpy(projectProjects, project.projects.at(p).c_str());
+			kiss_array_appendstring(textbox->array, 0, projectProjects, NULL);
+			free(projectProjects);
+                }
+        }
+        if(project.projects.size() == 0 or opt == project.projects.size())
+        {
+                std::cout << "Criando um projeto!" << std::endl;
+                std::string pName;
+                std::cout << "Nome do projeto: ";
+                std::cin >> pName;
+                std::string pDir;
+                std::cout << std::endl << "Diretorio do projeto: ";
+                std::cin >> pDir;
+
+                std::cout << std::endl;
+
+                project.create(pName, pDir, Engine::dir);
+        }
+}
+
 static void text_reset(kiss_textbox *textbox, kiss_vscrollbar *vscrollbar)    
 {                                              
         qsort(textbox->array->data, textbox->array->length, sizeof(void *),    
@@ -54,6 +85,18 @@ static void vscrollbar_event(kiss_vscrollbar *vscrollbar, SDL_Event *e,
 static void projectRun(char *proDir, Project project)
 {
 	project.open(Engine::dir, proDir);
+
+	std::string eDir = Engine::dir + "/GioTree/src/";
+	std::string libs = eDir + "Application.cpp " + eDir + "log.cpp " + "-lSDL2";
+	std::string pCPP = "g++ -w " + project.dir + "/" + project.name + ".cpp " + libs + " -o " + project.name;
+
+	system(pCPP.c_str());
+
+	int pid, status;
+
+   	if (pid = fork()) { waitpid(pid, &status, 0); /* wait for the child to exit */ } 
+
+	else { execl(project.name.c_str(), project.name.c_str(), NULL); }
 }
 
 static void button_ok1_event(kiss_button *button, SDL_Event *e,
@@ -96,21 +139,6 @@ int Engine::init()
 	{
 		project.open(dir, project.projects.at(opt));
 	}
-
-
-	project_name = project.projects.at(opt);
-
-	std::string eDir = dir + "/GioTree/src/";
-	std::string libs = eDir + "Application.cpp " + eDir + "log.cpp " + eDir + "window.cpp " + eDir + "core.cpp " + "-lSDL2";
-	std::string pCPP = "g++ -w " + project.dir + "/" + project.name + ".cpp " + libs + " -o " + project.name;
-
-	system(pCPP.c_str());
-
-	int pid, status;
-
-   	if (pid = fork()) { waitpid(pid, &status, 0); /* wait for the child to exit */ } 
-
-	else { execl(project.name.c_str(), project.name.c_str(), NULL); }
 
 	return 0;
 }
