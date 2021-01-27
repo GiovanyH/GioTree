@@ -2,8 +2,8 @@
 
 #include <iostream>
 #include <sys/wait.h>
-#include "log.h"
-#include "projectManager.h"
+#include "../Log/log.h"
+#include "../projectManager/projectManager.h"
 
 char *kiss_dire;
 

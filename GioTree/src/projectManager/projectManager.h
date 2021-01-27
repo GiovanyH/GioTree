@@ -10,8 +10,8 @@
 #include <unistd.h>
 #endif
 #include <sys/wait.h>
-#include "log.h"
-#include "window.c"
+#include "../Log/log.h"
+#include "../UI/window.c"
 
 namespace cu = std::filesystem;
 

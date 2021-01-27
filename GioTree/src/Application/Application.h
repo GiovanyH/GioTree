@@ -1,5 +1,5 @@
 #include <string>
-#include "log.h"
+#include "../Log/log.h"
 #include <SDL2/SDL.h>
 
 namespace Application

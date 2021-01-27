@@ -1,5 +1,5 @@
 #include "kiss_sdl-master/kiss_sdl.h"    
-#include "log.h"    
+#include "../Log/log.h"    
      
 struct window_t    
 {    

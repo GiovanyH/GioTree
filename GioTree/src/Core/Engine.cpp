@@ -7,6 +7,7 @@ int Engine::init()
 	Project project;
 	project.init(dir);
 	project.finish();
+	std::cout << "Project finalized" << std::endl;
 	/*Log::info("Engine iniciada!");
 	Project project;     
         unsigned opt = 0;	

@@ -228,16 +228,17 @@ SDL_Renderer* kiss_init(const char* kiss_dire, const char* title, kiss_array *a,
 		kiss_buttonfont_size);
 	free(kiss_strDire2);
 
-
 	for(int i = 0; i < 13; ++i)
 	{
-		char *kissArrayCpy = (char*)malloc(sizeof(char) * strlen(kiss_dire) + sizeof(char) * strlen((char*) kiss_array_data(strings, i)));
+		char *kissArrayCpy = (char*)malloc((sizeof(char) * strlen(kiss_dire)) + (sizeof(char) * strlen((char*) kiss_array_data(strings, i))) + 1);
 		strcpy(kissArrayCpy, kiss_dire);
 		strcat(kissArrayCpy, (char*) kiss_array_data(strings, i));
 
 		r += kiss_image_new(&kiss_imagesPNG[i], kissArrayCpy, a, renderer);
+
 		free(kissArrayCpy);
 	}
+
 
 	if (r) {
 		kiss_clean(a);

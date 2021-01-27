@@ -77,24 +77,21 @@ static void vscrollbar_event(kiss_vscrollbar *vscrollbar, SDL_Event *e,
         }
 }
 
-static void projectRun(char *proDir, Project project, std::string Engine_dir, int *quit)
+static void projectRun(std::string Engine_dir, Project project)
 {
-        project.open(Engine_dir, proDir);
- 
-        std::string eDir = Engine_dir + "/GioTree/src/";
+	std::string eDir = Engine_dir + "/GioTree/src/";
         std::string libs = eDir + "Application.cpp " + eDir + "log.cpp " + "-lSDL2";
         std::string pCPP = "g++ -w " + project.dir + "/" + project.name + ".cpp " + libs + " -o " + project.name;
- 
+
         system(pCPP.c_str());
 
-	project.finish();
+        project.finish();
 
-	*quit = 1;
- 
+	/**quit = 1;*/
         int pid, status;
- 
-        if (pid = fork()) { waitpid(pid, &status, 0); /* wait for the child to exit */ } 
- 
+
+        if (pid = fork()) { waitpid(pid, &status, 0); /* wait for the child to exit */ }
+
         else { execl(project.name.c_str(), project.name.c_str(), NULL); }
 }
 
@@ -105,7 +102,8 @@ static void button_ok1_event(kiss_button *button, SDL_Event *e,
         if (kiss_button_event(button, e, draw)) {
                 window1->focus = 0;
                 button->prelight = 0;
-                projectRun(entry->text, project, Engine_dir, quit);
+		project.open(Engine_dir, entry->text);
+		*quit = 1;
         }
 }
 
@@ -186,7 +184,7 @@ void Project::remove()
 
 void Project::init(std::string Engine_dir)
 {
-	wDir = (Engine_dir + "/GioTree/src/kiss_sdl-master/");
+	wDir = (Engine_dir + "/GioTree/src/UI/kiss_sdl-master/");
 	SDL_Renderer *renderer;
         SDL_Event e;
         kiss_array objects, a1, a2;

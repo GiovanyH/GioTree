@@ -47,32 +47,32 @@ CFLAGS = -Wall -c -std=c++17
 BIN = GioEngine
 all: $(BIN)
 
-$(BIN): GioTree/src/Engine.o GioTree/src/kiss_sdl-master/kiss_widgets.o GioTree/src/kiss_sdl-master/kiss_draw.o GioTree/src/kiss_sdl-master/kiss_general.o \
-GioTree/src/kiss_sdl-master/kiss_posix.o GioTree/src/window.o GioTree/src/projectManager.o GioTree/src/log.o 
+$(BIN): GioTree/src/Core/Engine.o GioTree/src/UI/kiss_sdl-master/kiss_widgets.o GioTree/src/UI/kiss_sdl-master/kiss_draw.o GioTree/src/UI/kiss_sdl-master/kiss_general.o \
+GioTree/src/UI/kiss_sdl-master/kiss_posix.o GioTree/src/UI/window.o GioTree/src/projectManager/projectManager.o GioTree/src/Log/log.o 
 	$(CPP) $^ $(LDFLAGS) -o $@
 
-GioTree/src/Engine.o: GioTree/src/Engine.cpp
+GioTree/src/Core/Engine.o: GioTree/src/Core/Engine.cpp
 	$(CPP) $(CFLAGS) $^ -o $@
 
-GioTree/src/kiss_sdl-master/kiss_widgets.o: GioTree/src/kiss_sdl-master/kiss_widgets.c
+GioTree/src/UI/kiss_sdl-master/kiss_widgets.o: GioTree/src/UI/kiss_sdl-master/kiss_widgets.c
 	$(C) $(CFLAGS) $^ -o $@
 
-GioTree/src/kiss_sdl-master/kiss_draw.o: GioTree/src/kiss_sdl-master/kiss_draw.c
+GioTree/src/UI/kiss_sdl-master/kiss_draw.o: GioTree/src/UI/kiss_sdl-master/kiss_draw.c
 	$(C) $(CFLAGS) $^ -o $@
 
-GioTree/src/kiss_sdl-master/kiss_general.o: GioTree/src/kiss_sdl-master/kiss_general.c
+GioTree/src/UI/kiss_sdl-master/kiss_general.o: GioTree/src/UI/kiss_sdl-master/kiss_general.c
 	$(C) $(CFLAGS) $^ -o $@
 
-GioTree/src/kiss_sdl-master/kiss_posix.o: GioTree/src/kiss_sdl-master/kiss_posix.c
+GioTree/src/UI/kiss_sdl-master/kiss_posix.o: GioTree/src/UI/kiss_sdl-master/kiss_posix.c
 	$(C) $(CFLAGS) $^ -o $@
 
-GioTree/src/window.o: GioTree/src/window.c
+GioTree/src/UI/window.o: GioTree/src/UI/window.c
 	$(CPP) $^ $(CFLAGS) -o $@
 
-GioTree/src/projectManager.o: GioTree/src/projectManager.cpp
+GioTree/src/projectManager/projectManager.o: GioTree/src/projectManager/projectManager.cpp
 	$(CPP) $^ $(CFLAGS) -o $@
 
-GioTree/src/log.o: GioTree/src/log.cpp
+GioTree/src/Log/log.o: GioTree/src/Log/log.cpp
 	$(CPP) $^ $(CFLAGS) -o $@
 
 clean:
