@@ -77,7 +77,7 @@ static void vscrollbar_event(kiss_vscrollbar *vscrollbar, SDL_Event *e,
         }
 }
 
-static void projectRun(char *proDir, Project project, std::string Engine_dir)
+static void projectRun(char *proDir, Project project, std::string Engine_dir, int *quit)
 {
         project.open(Engine_dir, proDir);
  
@@ -86,6 +86,10 @@ static void projectRun(char *proDir, Project project, std::string Engine_dir)
         std::string pCPP = "g++ -w " + project.dir + "/" + project.name + ".cpp " + libs + " -o " + project.name;
  
         system(pCPP.c_str());
+
+	project.finish();
+
+	*quit = 1;
  
         int pid, status;
  
@@ -95,13 +99,13 @@ static void projectRun(char *proDir, Project project, std::string Engine_dir)
 }
 
 static void button_ok1_event(kiss_button *button, SDL_Event *e,
-        kiss_window *window1, kiss_entry *entry, int *draw, Project project, std::string Engine_dir)
+        kiss_window *window1, kiss_entry *entry, int *draw, Project project, std::string Engine_dir, int *quit)
 {
 
         if (kiss_button_event(button, e, draw)) {
                 window1->focus = 0;
                 button->prelight = 0;
-                projectRun(entry->text, project, Engine_dir);
+                projectRun(entry->text, project, Engine_dir, quit);
         }
 }
 
@@ -153,7 +157,6 @@ void Project::open(std::string dataDir, std::string pName)
 {
 	std::string line;
 	std::string pPath = dataDir + "/GioTree/" + "usr/" + pName;
-	std::cout << pPath << std::endl;
 	std::fstream fs(pPath, std::fstream::in | std::fstream::out | std::fstream::app);
 	std::vector<std::string> projProp;
 
@@ -163,7 +166,6 @@ void Project::open(std::string dataDir, std::string pName)
 	}
 	fs.close();
 
-	std::cout << projProp.at(0);
 	dir = projProp.at(0);
 	name = projProp.at(1);
 	description = projProp.at(2);
@@ -173,11 +175,6 @@ void Project::open(std::string dataDir, std::string pName)
 	name.erase(0, 9);
 	description.erase(0, 9);
 	version.erase(0, 12);
-
-	std::cout << dir << std::endl;
-	std::cout << name << std::endl;
-	std::cout << description << std::endl;
-	std::cout << version << std::endl;
 }
 
 void Project::remove()
@@ -254,7 +251,7 @@ void Project::init(std::string Engine_dir)
                                 &draw);
                         vscrollbar_event(&vscrollbar, &e, &textbox,
                                 &draw);
-                        button_ok1_event(&button_ok1, &e, &window1, &entry, &draw, *this, Engine_dir);
+                        button_ok1_event(&button_ok1, &e, &window1, &entry, &draw, *this, Engine_dir, &quit);
                         button_cancel_event(&button_cancel, &e, &quit,
                                 &draw);
                         kiss_entry_event(&entry, &e, &draw);

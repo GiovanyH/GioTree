@@ -1,5 +1,3 @@
-#pragma once
-
 #include <string>
 #include "log.h"
 #include <SDL2/SDL.h>

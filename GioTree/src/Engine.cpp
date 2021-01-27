@@ -4,7 +4,10 @@ std::string Engine::dir = cu::current_path();
 
 int Engine::init()
 {
-	Log::info("Engine iniciada!");
+	Project project;
+	project.init(dir);
+	project.finish();
+	/*Log::info("Engine iniciada!");
 	Project project;     
         unsigned opt = 0;	
 	if(project.projects.size() == 0 or opt == project.projects.size())
@@ -24,7 +27,7 @@ int Engine::init()
 	else if(project.projects.size() > 0 && opt < project.projects.size())
 	{
 		project.open(dir, project.projects.at(opt));
-	}
+	}*/
 
 	return 0;
 }
@@ -37,5 +40,6 @@ int Engine::finish()
 
 int main()
 {
+	Engine::init();
 	return 0;
 }

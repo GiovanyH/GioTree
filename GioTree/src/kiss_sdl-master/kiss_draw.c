@@ -235,9 +235,6 @@ SDL_Renderer* kiss_init(const char* kiss_dire, const char* title, kiss_array *a,
 		strcpy(kissArrayCpy, kiss_dire);
 		strcat(kissArrayCpy, (char*) kiss_array_data(strings, i));
 
-		printf("%s\n", (char*) kiss_array_data(strings, i));
-		printf("%s\n", kissArrayCpy);
-
 		r += kiss_image_new(&kiss_imagesPNG[i], kissArrayCpy, a, renderer);
 		free(kissArrayCpy);
 	}
