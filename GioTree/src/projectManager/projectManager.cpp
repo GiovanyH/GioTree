@@ -96,13 +96,13 @@ static void projectRun(std::string Engine_dir, Project project)
 }
 
 static void button_ok1_event(kiss_button *button, SDL_Event *e,
-        kiss_window *window1, kiss_entry *entry, int *draw, Project project, std::string Engine_dir, int *quit)
+        kiss_window *window1, kiss_entry *entry, int *draw, Project *project, std::string Engine_dir, int *quit)
 {
 
         if (kiss_button_event(button, e, draw)) {
                 window1->focus = 0;
                 button->prelight = 0;
-		project.open(Engine_dir, entry->text);
+		project->open(Engine_dir, entry->text);
 		*quit = 1;
         }
 }
@@ -249,7 +249,7 @@ void Project::init(std::string Engine_dir)
                                 &draw);
                         vscrollbar_event(&vscrollbar, &e, &textbox,
                                 &draw);
-                        button_ok1_event(&button_ok1, &e, &window1, &entry, &draw, *this, Engine_dir, &quit);
+                        button_ok1_event(&button_ok1, &e, &window1, &entry, &draw, this, Engine_dir, &quit);
                         button_cancel_event(&button_cancel, &e, &quit,
                                 &draw);
                         kiss_entry_event(&entry, &e, &draw);

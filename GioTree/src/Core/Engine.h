@@ -4,6 +4,7 @@
 #include <sys/wait.h>
 #include "../Log/log.h"
 #include "../projectManager/projectManager.h"
+#include "../Editor/editor.h"
 
 char *kiss_dire;
 
