@@ -11,7 +11,7 @@ int Engine::init()
 	std::cout << "Project finalized" << std::endl;
 
 	Editor editor;
-	editor.init(project.name, project.description, project.version);
+	editor.init(project.name, project.description, project.version, Engine::dir, project);
 
 	/*Log::info("Engine iniciada!");
 	Project project;     

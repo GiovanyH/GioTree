@@ -44,6 +44,7 @@ C = gcc
 
 LDFLAGS = -lstdc++ -lSDL2 -lSDL2_image -lSDL2_ttf
 CFLAGS = -Wall -c -std=c++17
+CFLAGS2 = -Wall -c
 BIN = GioEngine
 all: $(BIN)
 
@@ -55,19 +56,19 @@ GioTree/src/Core/Engine.o: GioTree/src/Core/Engine.cpp
 	$(CPP) $^ $(CFLAGS) -o $@
 
 GioTree/src/UI/kiss_sdl-master/kiss_widgets.o: GioTree/src/UI/kiss_sdl-master/kiss_widgets.c
-	$(C) $^ -o $@
+	$(C) $^ $(CFLAGS2) -o $@
 
 GioTree/src/UI/kiss_sdl-master/kiss_draw.o: GioTree/src/UI/kiss_sdl-master/kiss_draw.c
-	$(C) $^ -o $@
+	$(C) $^ $(CFLAGS2) -o $@
 
 GioTree/src/UI/kiss_sdl-master/kiss_general.o: GioTree/src/UI/kiss_sdl-master/kiss_general.c
-	$(C) $^ -o $@
+	$(C) $^ $(CFLAGS2) -o $@
 
 GioTree/src/UI/kiss_sdl-master/kiss_posix.o: GioTree/src/UI/kiss_sdl-master/kiss_posix.c
-	$(C) $^ -o $@
+	$(C) $^ $(CFLAGS2) -o $@
 
 GioTree/src/UI/window.o: GioTree/src/UI/window.c
-	$(CPP) $^ -o $@
+	$(CPP) $^ $(CFLAGS2) -o $@
 
 GioTree/src/projectManager/projectManager.o: GioTree/src/projectManager/projectManager.cpp
 	$(CPP) $^ $(CFLAGS) -o $@
