@@ -80,7 +80,7 @@ static void vscrollbar_event(kiss_vscrollbar *vscrollbar, SDL_Event *e,
 static void projectRun(std::string Engine_dir, Project project)
 {
 	std::string eDir = Engine_dir + "/GioTree/src/";
-        std::string libs = eDir + "Application.cpp " + eDir + "log.cpp " + "-lSDL2";
+        std::string libs = eDir + "Application/Application.cpp " + eDir + "Log/log.cpp " + "-lSDL2";
         std::string pCPP = "g++ -w " + project.dir + "/" + project.name + ".cpp " + libs + " -o " + project.name;
 
         system(pCPP.c_str());
@@ -136,11 +136,11 @@ void Project::create(std::string pName = "default", std::string pDir = "/home/us
 	dir = GameFolder;
 	name = pName;
 
-	Log::info(("Seu projeto esta em" + GameFolder).c_str());
+	Log::info(("Seu projeto esta em " + GameFolder).c_str());
 
 	std::string GameCPP = GameFolder + "/" + pName + ".cpp";
 	std::fstream fs(GameCPP, std::fstream::in | std::fstream::out | std::fstream::app);
-    	fs << "#include " << '"' << eDir << "/GioTree/src/Application.h" << '"';
+    	fs << "#include " << '"' << eDir << "/GioTree/src/Application/Application.h" << '"';
 	fs << "\n\nvoid Application::Ready()\n{\n}\n\nvoid Application::Update()\n{\n}\n\n// Teste\n";
     	fs.close();
 
@@ -149,6 +149,16 @@ void Project::create(std::string pName = "default", std::string pDir = "/home/us
 	std::fstream fs2(EngineFile, std::fstream::in | std::fstream::out | std::fstream::app);
 	fs2 << "GioDir: " << dir << "\nGioName: " << name << "\nGioDesc: " << description << "\nGioVersion: " << version;
 	fs2.close();
+}
+
+static void button_create_event(kiss_button *button, SDL_Event *e, kiss_window *window, kiss_entry *entry, int *draw, Project *project,
+		std::string User_dir, std::string Engine_dir)
+{
+        if (kiss_button_event(button, e, draw)) {
+                window->focus = 0;
+                button->prelight = 0;
+                project->create(entry->text, User_dir, Engine_dir);
+	}
 }
 
 void Project::open(std::string dataDir, std::string pName)
@@ -190,7 +200,7 @@ void Project::init(std::string Engine_dir)
         kiss_array objects, a1, a2;
         kiss_window window1;
         kiss_label label = {0}, label_sel = {0};
-        kiss_button button_ok1 = {0}, button_cancel = {0};
+        kiss_button button_ok1 = {0}, button_create = {0}, button_cancel = {0};
         kiss_textbox textbox = {0};
         kiss_vscrollbar vscrollbar = {0};
         kiss_progressbar progressbar = {0};
@@ -231,6 +241,8 @@ void Project::init(std::string Engine_dir)
                 entry.rect.y + entry.rect.h + kiss_imagesPNG[0].h);
         kiss_button_new(&button_ok1, &window1, "Abrir", button_cancel.rect.x -
                 2 * kiss_imagesPNG[0].w, button_cancel.rect.y);
+	kiss_button_new(&button_create, &window1, "Create", button_cancel.rect.x -
+		4 * kiss_imagesPNG[0].w, button_cancel.rect.y);
         dirent_read(&textbox, &vscrollbar, &label_sel, Engine_dir);
 
         /* Do that, and all widgets associated with the window will show */
@@ -250,6 +262,7 @@ void Project::init(std::string Engine_dir)
                         vscrollbar_event(&vscrollbar, &e, &textbox,
                                 &draw);
                         button_ok1_event(&button_ok1, &e, &window1, &entry, &draw, this, Engine_dir, &quit);
+			button_create_event(&button_create, &e, &window1, &entry, &draw, this, Engine_dir, "/home/giovany/");
                         button_cancel_event(&button_cancel, &e, &quit,
                                 &draw);
                         kiss_entry_event(&entry, &e, &draw);
@@ -270,6 +283,7 @@ void Project::init(std::string Engine_dir)
                 kiss_entry_draw(&entry, renderer);
                 kiss_button_draw(&button_ok1, renderer);
                 kiss_button_draw(&button_cancel, renderer);
+		kiss_button_draw(&button_create, renderer);
 
                 SDL_RenderPresent(renderer);
                 draw = 0;
